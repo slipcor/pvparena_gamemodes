@@ -1,0 +1,12 @@
+=== Todo
+
+* Fixes
+** DOM arena fixing
+* Features
+** 
+
+
+
+== Node
+
+when done, create rush mode based on this
