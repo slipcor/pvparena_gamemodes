@@ -7,11 +7,8 @@
 
 
 == GamePlay
-
 prepare multiple pillars, by default: 3 wool, white
-
 click any of those wool to increase claim score: default: 3 clicks = 1 %
-
 time limit 15, count %,
 
  
