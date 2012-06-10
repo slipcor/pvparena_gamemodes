@@ -45,7 +45,7 @@ public class Pillar extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.6.9";
+		return "v0.8.8.0";
 	}
 	
 	@Override
@@ -312,8 +312,10 @@ db.i("[FLAG]");
 		}
 
 		arena.lives.clear();
+		EndRunnable er = new EndRunnable(arena, arena.cfg.getInt("goal.endtimer"),0);
 		arena.REALEND_ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(PVPArena.instance,
-				new EndRunnable(arena, arena.cfg.getInt("goal.endtimer")), 20L, 20L);
+				er, 20L, 20L);
+		er.setId(arena.REALEND_ID);
 	}
 	
 	@Override
@@ -567,9 +569,10 @@ db.i("[FLAG]");
 		}
 
 		PVPArena.instance.getAmm().timedEnd(arena, result);
-
+		EndRunnable er = new EndRunnable(arena, arena.cfg.getInt("goal.endtimer"),0);
 		arena.REALEND_ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(PVPArena.instance,
-				new EndRunnable(arena, arena.cfg.getInt("goal.endtimer")), 20L, 20L);
+				er, 20L, 20L);
+		er.setId(arena.REALEND_ID);
 	}
 	
 	@Override

@@ -48,7 +48,7 @@ public class Domination extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.4.6";
+		return "v0.8.8.0";
 	}
 	
 	@Override
@@ -369,8 +369,10 @@ public class Domination extends ArenaType {
 		}
 
 		arena.lives.clear();
+		EndRunnable er = new EndRunnable(arena, arena.cfg.getInt("goal.endtimer"),0);
 		arena.REALEND_ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(PVPArena.instance,
-				new EndRunnable(arena, arena.cfg.getInt("goal.endtimer")), 20L, 20L);
+				er, 20L, 20L);
+		er.setId(arena.REALEND_ID);
 	}
 
 	@Override
@@ -648,11 +650,10 @@ public class Domination extends ArenaType {
 		}
 
 		PVPArena.instance.getAmm().timedEnd(arena, result);
-
-		arena.REALEND_ID = Bukkit.getScheduler()
-				.scheduleSyncRepeatingTask(PVPArena.instance,
-						new EndRunnable(arena, arena.cfg.getInt("goal.endtimer")),
-						20L, 20L);
+		EndRunnable er = new EndRunnable(arena, arena.cfg.getInt("goal.endtimer"),0);
+		arena.REALEND_ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(PVPArena.instance,
+				er, 20L, 20L);
+		er.setId(arena.REALEND_ID);
 	}
 
 	@Override

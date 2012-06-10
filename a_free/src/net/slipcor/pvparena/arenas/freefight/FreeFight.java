@@ -33,7 +33,7 @@ public class FreeFight extends ArenaType {
 
 	@Override
 	public String version() {
-		return "v0.8.4.6";
+		return "v0.8.8.0";
 	}
 
 	@Override
@@ -68,8 +68,10 @@ public class FreeFight extends ArenaType {
 			arena.tellEveryone(Language.parse("playerhaswon", ChatColor.WHITE
 					+ activePlayer.getName()));
 		}
+		EndRunnable er = new EndRunnable(arena, arena.cfg.getInt("goal.endtimer"),0);
 		arena.REALEND_ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(PVPArena.instance,
-				new EndRunnable(arena, arena.cfg.getInt("goal.endtimer")), 20L, 20L);
+				er, 20L, 20L);
+		er.setId(arena.REALEND_ID);
 		return true;
 	}
 
@@ -311,8 +313,9 @@ public class FreeFight extends ArenaType {
 		}
 
 		PVPArena.instance.getAmm().timedEnd(arena, result);
-
+		EndRunnable er = new EndRunnable(arena, arena.cfg.getInt("goal.endtimer"),0);
 		arena.REALEND_ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(PVPArena.instance,
-				new EndRunnable(arena, arena.cfg.getInt("goal.endtimer")), 20L, 20L);
+				er, 20L, 20L);
+		er.setId(arena.REALEND_ID);
 	}
 }
