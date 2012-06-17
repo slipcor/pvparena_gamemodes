@@ -48,7 +48,7 @@ public class Domination extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.8.0";
+		return "v0.8.10.0";
 	}
 	
 	@Override
@@ -444,7 +444,11 @@ public class Domination extends ArenaType {
 		if (!found) {
 			return;
 		}
-
+		if (Arena.regionmodify.startsWith(arena.name)) {
+			Arena.regionmodify = "";
+			Arenas.tellPlayer(player, Language.parse("tosetflagdone"));
+			return;
+		}
 		Arena.regionmodify = arena.name + ":" + sName;
 		Arenas.tellPlayer(player, Language.parse("tosetflag", sName));
 	}
@@ -528,6 +532,7 @@ public class Domination extends ArenaType {
 	public void initLanguage(YamlConfiguration config) {
 		config.addDefault("lang.killedby", "%1% has been killed by %2%!");
 		config.addDefault("lang.setflag", "Flag set: %1%");
+		config.addDefault("lang.tosetflagdone", "Exited flag set mode!");
 
 		config.addDefault("lang.domscore",
 				"Team %1% scored a point by holding a flag!");
