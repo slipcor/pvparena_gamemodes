@@ -25,7 +25,7 @@ public class DeathMatch extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.8.0";
+		return "v0.8.10.0";
 	}
 	
 	@Override
@@ -140,18 +140,6 @@ public class DeathMatch extends ArenaType {
 
 		return place;
 	}
-
-	@Override
-	public void initiate() {
-		arena.lives.clear();
-		for (ArenaTeam team : arena.getTeams()) {
-			if (team.getTeamMembers().size() > 0) {
-				// team is active
-				arena.lives.put(team.getName(),
-						arena.cfg.getInt("game.lives", 3));
-			}
-		}
-	}
 	
 	@Override
 	public void initLanguage(YamlConfiguration config) {
@@ -176,7 +164,7 @@ public class DeathMatch extends ArenaType {
 			return;
 		}
 
-		if (reduceLivesCheckEndAndCommit(team.getName())) {
+		if (reduceLivesCheckEndAndCommit(respawnPlayer.getName())) {
 			return;
 		}
 		arena.tellEveryone(
@@ -184,22 +172,27 @@ public class DeathMatch extends ArenaType {
 						"frag",
 						team.colorizePlayer(attacker) + ChatColor.YELLOW,
 						String.valueOf(arena.cfg.getInt("game.lives")
-								- arena.lives.get(team.getName()))));
+								- arena.lives.get(respawnPlayer.getName()))));
 		arena.tpPlayerToCoordName(respawnPlayer, respawnTeam.getName() + "spawn");
 	}
 
 	@Override
-	public boolean reduceLivesCheckEndAndCommit(String team) {
+	public boolean reduceLivesCheckEndAndCommit(String sPlayer) {
 
-		db.i("reducing lives of team " + team);
-		if (arena.lives.get(team) != null) {
-			int i = arena.lives.get(team) - 1;
+		db.i("reducing lives of team " + sPlayer);
+		if (arena.lives.get(sPlayer) != null) {
+			int i = arena.lives.get(sPlayer) - 1;
 			if (i > 0) {
-				arena.lives.put(team, i);
+				arena.lives.put(sPlayer, i);
 			} else {
-				arena.lives.remove(team);
-				commit(team, false);
-				return true;
+				arena.lives.remove(sPlayer);
+				for (ArenaTeam aTeam : arena.getTeams()) {
+					if (!aTeam.getTeamMembers().contains(ArenaPlayer.parsePlayer(Bukkit.getPlayerExact(sPlayer)))) {
+						continue;
+					}
+					commit(aTeam.getName(), false);
+					return true;
+				}
 			}
 		}
 		return false;
