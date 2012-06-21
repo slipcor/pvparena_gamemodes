@@ -48,7 +48,7 @@ public class Domination extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.10.0";
+		return "v0.8.10.1";
 	}
 	
 	@Override
@@ -430,27 +430,13 @@ public class Domination extends ArenaType {
 			return;
 		}
 		
-		String sName = args[0].replace("flag", "");
-
-		boolean found = false;
-
-		for (ArenaTeam team : arena.getTeams()) {
-			String sTeam = team.getName();
-			if (sName.startsWith(sTeam)) {
-				found = true;
-			}
-		}
-
-		if (!found) {
-			return;
-		}
 		if (Arena.regionmodify.startsWith(arena.name)) {
 			Arena.regionmodify = "";
 			Arenas.tellPlayer(player, Language.parse("tosetflagdone"));
 			return;
 		}
-		Arena.regionmodify = arena.name + ":" + sName;
-		Arenas.tellPlayer(player, Language.parse("tosetflag", sName));
+		Arena.regionmodify = arena.name + ":flag";
+		Arenas.tellPlayer(player, Language.parse("tosetflag", "flag"));
 	}
 
 	protected short getFlagOverrideTeamShort(String team) {
@@ -509,7 +495,6 @@ public class Domination extends ArenaType {
 
 	@Override
 	public void initiate() {
-		// TODO for all spawns
 		takeFlag(Spawns.getCoords(arena, "flag"));
 		paFlags = new HashMap<Location, String>();
 
@@ -596,10 +581,6 @@ public class Domination extends ArenaType {
 		}
 		if (paHeadGears != null) {
 			paHeadGears.clear();
-		}
-
-		if (paRuns == null || paRuns.size() < 1) {
-			return;
 		}
 
 		for (DominationRunnable run : paRuns.values()) {
