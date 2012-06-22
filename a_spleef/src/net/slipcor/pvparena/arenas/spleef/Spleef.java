@@ -33,7 +33,7 @@ public class Spleef extends ArenaType {
 
 	@Override
 	public String version() {
-		return "v0.8.8.0";
+		return "v0.8.10.8";
 	}
 
 	@Override
@@ -234,6 +234,7 @@ public class Spleef extends ArenaType {
 		config.addDefault("lang.playerjoinedfree",
 				"%1% has joined the FreeFight Arena");
 		config.addDefault("lang.playerhaswon", "%1% is the Champion!");
+		config.addDefault("lang.setlounge", "Loung set!");
 	}
 	
 	@Override
