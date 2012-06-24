@@ -48,7 +48,7 @@ public class Domination extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.10.1";
+		return "v0.8.10.4";
 	}
 	
 	@Override
@@ -180,6 +180,15 @@ public class Domination extends ArenaType {
 					Bukkit.getScheduler().cancelTask(paRuns.get(loc).ID);
 					paRuns.remove(loc);
 				}
+				if (paFlags.containsKey(loc)) {
+					String team = paFlags.get(loc);
+					
+					// flag claimed! add score!
+					arena.type().reduceLivesCheckEndAndCommit(team);
+					arena.tellEveryone(
+							Language.parse("domscore", Teams.getTeam(arena, team).colorize()
+									+ ChatColor.YELLOW));
+				}
 				continue;
 			}
 
@@ -187,8 +196,6 @@ public class Domination extends ArenaType {
 			db.i("=> at least one team is at the flag!");
 
 			if (paFlags.containsKey(loc)) {
-				db.i("- flag is taken");
-
 				// flag is taken. by whom?
 				if (teams.contains(paFlags.get(loc))) {
 					// owning team is there
@@ -219,6 +226,15 @@ public class Domination extends ArenaType {
 							Bukkit.getScheduler()
 									.cancelTask(paRuns.get(loc).ID);
 							paRuns.remove(loc);
+						} else {
+							
+							String team = paFlags.get(loc);
+							
+							// flag claimed! add score!
+							arena.type().reduceLivesCheckEndAndCommit(team);
+							arena.tellEveryone(
+									Language.parse("domscore", Teams.getTeam(arena, team).colorize()
+											+ ChatColor.YELLOW));
 						}
 					}
 					continue;
@@ -241,10 +257,11 @@ public class Domination extends ArenaType {
 				db.i("    - not yet being unclaimed, do it!");
 				// create an unclaim runnable
 				DominationRunnable running = new DominationRunnable(arena,
-						false, loc, "", this);
+						false, loc, paFlags.get(loc), this);
 				long interval = 20L * 10;
 
-				Bukkit.getScheduler().scheduleSyncRepeatingTask(
+				
+				running.ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(
 						PVPArena.instance, running, interval, interval);
 				paRuns.put(loc, running);
 			} else {
@@ -283,7 +300,7 @@ public class Domination extends ArenaType {
 							DominationRunnable running = new DominationRunnable(
 									arena, true, loc, sName, this);
 							long interval = 20L * 10;
-							Bukkit.getScheduler().scheduleSyncRepeatingTask(
+							running.ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(
 									PVPArena.instance, running, interval, interval);
 							paRuns.put(loc, running);
 						}
@@ -495,7 +512,9 @@ public class Domination extends ArenaType {
 
 	@Override
 	public void initiate() {
-		takeFlag(Spawns.getCoords(arena, "flag"));
+		for (Location loc : Spawns.getSpawns(arena, "flags")) {
+			takeFlag(arena, loc, "");
+		}
 		paFlags = new HashMap<Location, String>();
 
 		arena.lives.clear();
@@ -587,10 +606,21 @@ public class Domination extends ArenaType {
 			Bukkit.getScheduler().cancelTask(run.ID);
 		}
 		paRuns.clear();
+		paFlags.clear();
 	}
 
-	private void takeFlag(Location lBlock) {
-		lBlock.getBlock().setData(StringParser.getColorDataFromENUM("WHITE"));
+	static void takeFlag(Arena arena, Location lBlock, String name) {
+		ArenaTeam team = null;
+		for (ArenaTeam t : arena.getTeams()) {
+			if (t.getName().equals(name)) {
+				team = t;
+			}
+		}
+		if (team == null) {
+			lBlock.getBlock().setData(StringParser.getColorDataFromENUM("WHITE"));
+			return;
+		}
+		lBlock.getBlock().setData(StringParser.getColorDataFromENUM(team.getColor().name()));
 	}
 
 	/**

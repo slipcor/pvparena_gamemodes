@@ -3,7 +3,6 @@ package net.slipcor.pvparena.arenas.domination;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import net.slipcor.pvparena.PVPArena;
 import net.slipcor.pvparena.arena.Arena;
 import net.slipcor.pvparena.arena.ArenaPlayer;
 import net.slipcor.pvparena.core.Debug;
@@ -46,39 +45,39 @@ public class DominationRunnable implements Runnable {
 		if (take) {
 			// claim a flag for the team
 			if (domination.paFlags.containsKey(loc)) {
-				db.i("flag claimed. add score!");
-				// flag claimed! add score!
-				arena.type().reduceLivesCheckEndAndCommit(team);
-				arena.tellEveryone(
-						Language.parse("domscore", Teams.getTeam(arena, team).colorize()
-								+ ChatColor.YELLOW));
+				System.out.print("wtf");
 			} else {
 				// flag unclaimed! claim!
 				db.i("clag unclaimed. claim!");
 				domination.paFlags.put(loc, team);
-				long interval = 20L * 5;
+				//long interval = 20L * 5;
 				
 				arena.tellEveryone(
 						Language.parse("domclaiming", Teams.getTeam(arena, team).colorize()
 								+ ChatColor.YELLOW));
-				
+				/*
 				DominationRunnable running = new DominationRunnable(arena,
 						take, loc, team, domination);
 				running.ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(
 						PVPArena.instance, running, interval, interval);
-				domination.paRuns.put(loc, running);
+				domination.paRuns.put(loc, running);*/
+				
+				Domination.takeFlag(arena, loc, team);
+				
+				// claim done. end timer
+				Bukkit.getScheduler().cancelTask(ID);
+				domination.paRuns.remove(loc);
 			}
 		} else {
 			// unclaim
 			db.i("unclaim");
-			if (domination.paRuns.containsKey(loc)) {
-				arena.tellEveryone(
-						Language.parse("domunclaiming", domination.paRuns.get(loc).team
-								+ ChatColor.YELLOW));
-				
-				int run_id = domination.paRuns.get(loc).ID;
-				Bukkit.getScheduler().cancelTask(run_id);
-			}
+			arena.tellEveryone(
+					Language.parse("domunclaiming", team
+							+ ChatColor.YELLOW));
+			Domination.takeFlag(arena, loc, "");
+			Bukkit.getScheduler().cancelTask(ID);
+			domination.paRuns.remove(loc);
+			domination.paFlags.remove(loc);
 		}
 	}
 
