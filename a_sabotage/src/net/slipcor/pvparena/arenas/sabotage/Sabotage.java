@@ -44,7 +44,7 @@ public class Sabotage extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.8.0";
+		return "v0.8.10.0";
 	}
 	
 	@Override
@@ -431,10 +431,10 @@ public class Sabotage extends ArenaType {
 			}
 			return true;
 		}
-		if (!s.contains("flag")) {
+		if (!s.contains("tnt")) {
 			return false;
 		}
-		String sName = s.replace("flag", "");
+		String sName = s.replace("tnt", "");
 
 
 		for (ArenaTeam team : arena.getTeams()) {
