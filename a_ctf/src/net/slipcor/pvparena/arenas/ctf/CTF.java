@@ -45,7 +45,7 @@ public class CTF extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.8.0";
+		return "v0.8.11.11";
 	}
 	
 	@Override
@@ -487,6 +487,10 @@ public class CTF extends ArenaType {
 
 	@Override
 	public void initLanguage(YamlConfiguration config) {
+		config.addDefault("lang.youjoinedctf",
+				"Welcome to the CTF Arena! You are on team %1%'");
+		config.addDefault("lang.playerjoinedctf",
+				"%1% has joined team %2%!'");
 		config.addDefault("lang.killedby", "%1% has been killed by %2%!");
 		config.addDefault("lang.tosetflag", "Flag to set: %1%");
 		config.addDefault("lang.setflag", "Flag set: %1%");

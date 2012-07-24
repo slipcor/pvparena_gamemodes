@@ -46,7 +46,7 @@ public class Tank extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.11.3";
+		return "v0.8.11.11";
 	}
 
 	@Override
@@ -277,7 +277,7 @@ public class Tank extends ArenaType {
 	@Override
 	public void initLanguage(YamlConfiguration config) {
 		config.addDefault("lang.youjoinedtank",
-				"Welcome to the Tank Arena");
+				"Welcome to the Tank Arena!");
 		config.addDefault("lang.playerjoinedtank",
 				"%1% has joined the Tank Arena");
 		config.addDefault("lang.tankmode",

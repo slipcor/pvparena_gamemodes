@@ -25,7 +25,7 @@ public class DeathMatch extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.10.0";
+		return "v0.8.11.11";
 	}
 	
 	@Override
@@ -140,9 +140,13 @@ public class DeathMatch extends ArenaType {
 
 		return place;
 	}
-	
+
 	@Override
 	public void initLanguage(YamlConfiguration config) {
+		config.addDefault("lang.youjoineddm",
+				"Welcome to the DeathMatch Arena! You are on team %1%'");
+		config.addDefault("lang.playerjoineddm",
+				"%1% has joined team %2%!'");
 		config.addDefault("lang.frag",
 				"%1% killed another player! Total frags: %2%.");
 	}

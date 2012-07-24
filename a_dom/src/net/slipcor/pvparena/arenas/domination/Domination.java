@@ -48,7 +48,7 @@ public class Domination extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.11.8";
+		return "v0.8.11.11";
 	}
 	
 	@Override
@@ -534,6 +534,10 @@ public class Domination extends ArenaType {
 
 	@Override
 	public void initLanguage(YamlConfiguration config) {
+		config.addDefault("lang.youjoineddom",
+				"Welcome to the Domination Arena! You are on team %1%'");
+		config.addDefault("lang.playerjoineddom",
+				"%1% has joined team %2%!'");
 		config.addDefault("lang.killedby", "%1% has been killed by %2%!");
 		config.addDefault("lang.setflag", "Flag set: %1%");
 		config.addDefault("lang.tosetflagdone", "Exited flag set mode!");

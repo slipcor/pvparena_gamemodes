@@ -25,7 +25,7 @@ public class TeamDeathmatch extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.8.0";
+		return "v0.8.11.11";
 	}
 	
 	@Override
@@ -120,6 +120,14 @@ public class TeamDeathmatch extends ArenaType {
 				arena.lives.put(team.getName(), add);
 			}
 		}
+	}
+
+	@Override
+	public void initLanguage(YamlConfiguration config) {
+		config.addDefault("lang.youjoinedteamdm",
+				"Welcome to the TeamDeathmatch Arena! You are on team %1%'");
+		config.addDefault("lang.playerjoinedteamdm",
+				"%1% has joined team %2%!'");
 	}
 
 	@Override

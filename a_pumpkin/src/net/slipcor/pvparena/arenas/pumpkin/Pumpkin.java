@@ -45,7 +45,7 @@ public class Pumpkin extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.8.0";
+		return "v0.8.11.11";
 	}
 
 	@Override
@@ -464,9 +464,13 @@ db.i("[FLAG]");
 					Spawns.getCoords(arena, team.getName() + "pumpkin"));
 		}
 	}
-	
+
 	@Override
 	public void initLanguage(YamlConfiguration config) {
+		config.addDefault("lang.youjoinedpumpkin",
+				"Welcome to the Pumpkin Arena! You are on team %1%'");
+		config.addDefault("lang.playerjoinedpumpkin",
+				"%1% has joined team %2%!'");
 		config.addDefault("lang.killedby", "%1% has been killed by %2%!");
 		config.addDefault("lang.pumpkinhomeleft",
 				"Player %1% brought home the pumpkin of team %2%! Lives left: %3%");

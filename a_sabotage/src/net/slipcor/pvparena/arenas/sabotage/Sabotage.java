@@ -44,7 +44,7 @@ public class Sabotage extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.10.0";
+		return "v0.8.11.11";
 	}
 	
 	@Override
@@ -406,6 +406,11 @@ public class Sabotage extends ArenaType {
 
 	@Override
 	public void initLanguage(YamlConfiguration config) {
+		config.addDefault("lang.youjoinedsabotage",
+				"Welcome to the Sabotage Arena! You are on team %1%'");
+		config.addDefault("lang.playerjoinedsabotage",
+				"%1% has joined team %2%!'");
+		
 		config.addDefault("lang.killedby", "%1% has been killed by %2%!");
 		config.addDefault("lang.tosettnt", "TNT to set: %1%");
 		config.addDefault("lang.settnt", "TNT set: %1%");

@@ -33,7 +33,7 @@ public class Spleef extends ArenaType {
 
 	@Override
 	public String version() {
-		return "v0.8.11.3";
+		return "v0.8.11.11";
 	}
 
 	@Override
@@ -230,7 +230,7 @@ public class Spleef extends ArenaType {
 	@Override
 	public void initLanguage(YamlConfiguration config) {
 		config.addDefault("lang.youjoinedspleef",
-				"Welcome to the Spleef Arena");
+				"Welcome to the Spleef Arena!");
 		config.addDefault("lang.playerjoinedspleef",
 				"%1% has joined the Spleef Arena");
 		config.addDefault("lang.playerhaswon", "%1% is the Champion!");

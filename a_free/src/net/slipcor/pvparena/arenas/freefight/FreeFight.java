@@ -33,7 +33,7 @@ public class FreeFight extends ArenaType {
 
 	@Override
 	public String version() {
-		return "v0.8.8.0";
+		return "v0.8.11.11";
 	}
 
 	@Override
