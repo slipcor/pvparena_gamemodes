@@ -46,7 +46,7 @@ public class Tank extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.8.0";
+		return "v0.8.11.3";
 	}
 
 	@Override
@@ -407,6 +407,12 @@ public class Tank extends ArenaType {
 			}
 		}
 		return 1;
+	}
+	
+	@Override
+	public void reset(boolean force) {
+		tanks.clear();
+		status.clear();
 	}
 	
 	@Override
