@@ -48,7 +48,7 @@ public class Domination extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.10.4";
+		return "v0.8.11.8";
 	}
 	
 	@Override
@@ -605,8 +605,12 @@ public class Domination extends ArenaType {
 		for (DominationRunnable run : paRuns.values()) {
 			Bukkit.getScheduler().cancelTask(run.ID);
 		}
-		paRuns.clear();
-		paFlags.clear();
+		if (paRuns != null) {
+			paRuns.clear();
+		}
+		if (paFlags != null) {
+			paFlags.clear();
+		}
 	}
 
 	static void takeFlag(Arena arena, Location lBlock, String name) {
@@ -630,14 +634,14 @@ public class Domination extends ArenaType {
 	public void timed() {
 		int i;
 
-		int max = -1;
+		int max = arena.cfg.getInt("game.lives");
 		HashSet<String> result = new HashSet<String>();
 		db.i("timed end!");
 
 		for (String sTeam : arena.lives.keySet()) {
 			i = arena.lives.get(sTeam);
 
-			if (i > max) {
+			if (i < max) {
 				result = new HashSet<String>();
 				result.add(sTeam);
 				max = i;
