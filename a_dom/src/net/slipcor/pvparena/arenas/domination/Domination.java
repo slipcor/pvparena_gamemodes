@@ -48,12 +48,13 @@ public class Domination extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.11.11";
+		return "v0.8.11.20";
 	}
 	
 	@Override
 	public void addDefaultTeams(YamlConfiguration config) {
 		config.addDefault("game.woolHead", Boolean.valueOf(false));
+		config.addDefault("dom.claimRange", Integer.valueOf(2));
 		if (arena.cfg.get("teams") == null) {
 			db.i("no teams defined, adding custom red and blue!");
 			arena.cfg.getYamlConfiguration().addDefault("teams.red",
@@ -153,7 +154,7 @@ public class Domination extends ArenaType {
 		db.i("   checkMove();");
 		db.i("------------------");
 		
-		int checkDistance = 2;
+		int checkDistance = arena.cfg.getInt("dom.claimRange", 2);
 
 		for (Location loc : Spawns.getSpawns(arena, "flags")) {
 			//db.i("checking location: " + loc.toString());
