@@ -45,7 +45,7 @@ public class Pumpkin extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.11.11";
+		return "v0.8.12.5";
 	}
 
 	@Override
@@ -95,7 +95,7 @@ db.i("[FLAG]");
 					Language.parse(
 							"pumpkinsave",
 							Teams.getTeam(arena, ap).colorizePlayer(player),
-							Teams.getTeam(arena, ap).getName()
+							flagTeam.getName()
 									+ ChatColor.YELLOW,
 							flagTeam.colorize() + ChatColor.YELLOW));
 			paTeamFlags.remove(flagTeam.getName());
@@ -652,7 +652,7 @@ db.i("[FLAG]");
 		ArenaPlayer ap = ArenaPlayer.parsePlayer(player);
 		if (flag != null) {
 			ArenaTeam flagTeam = Teams.getTeam(arena, flag);
-			arena.tellEveryone(Language.parse("flagsave",
+			arena.tellEveryone(Language.parse("pumpkinsave",
 					Teams.getTeam(arena, ap).colorizePlayer(player), Teams
 							.getTeam(arena, ap).getName() + ChatColor.YELLOW,
 					flagTeam.colorize() + ChatColor.YELLOW));

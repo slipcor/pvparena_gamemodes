@@ -46,7 +46,7 @@ public class Tank extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.11.11";
+		return "v0.8.11.23";
 	}
 
 	@Override
@@ -71,6 +71,10 @@ public class Tank extends ArenaType {
 
 		if (aPlayers.size() > 1) {
 			return false;
+		}
+		
+		if (arena.REALEND_ID != -1) {
+			Bukkit.getScheduler().cancelTask(arena.REALEND_ID);
 		}
 
 		EndRunnable er = new EndRunnable(arena, arena.cfg.getInt("goal.endtimer"),0);
@@ -307,6 +311,11 @@ public class Tank extends ArenaType {
 				tanks.remove(respawnPlayer.getName());
 				arena.playerLeave(respawnPlayer, "lose");
 				arena.tellEveryone(Language.parse("tankdown"));
+				
+				if (arena.REALEND_ID != -1) {
+					Bukkit.getScheduler().cancelTask(arena.REALEND_ID);
+				}
+				
 				EndRunnable er = new EndRunnable(arena, arena.cfg.getInt("goal.endtimer"),0);
 				arena.REALEND_ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(PVPArena.instance,
 						er, 20L, 20L);
@@ -314,7 +323,7 @@ public class Tank extends ArenaType {
 				return;
 			}
 			PlayerListener.commitPlayerDeath(arena, respawnPlayer, respawnPlayer.getLastDamageCause());
-			arena.tellEveryone(Language.parse("tankwon"));
+			arena.tellEveryone(Language.parse("tankwon", tanks.get(arena)));
 		} else {
 			// stockup
 			resetArmor(respawnPlayer);
@@ -464,6 +473,11 @@ public class Tank extends ArenaType {
 				}
 			}
 		}
+
+		if (arena.REALEND_ID != -1) {
+			Bukkit.getScheduler().cancelTask(arena.REALEND_ID);
+		}
+		
 		PVPArena.instance.getAmm().timedEnd(arena, result);
 		EndRunnable er = new EndRunnable(arena, arena.cfg.getInt("goal.endtimer"),0);
 		arena.REALEND_ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(PVPArena.instance,

@@ -45,7 +45,7 @@ public class CTF extends ArenaType {
 	
 	@Override
 	public String version() {
-		return "v0.8.11.11";
+		return "v0.8.12.5";
 	}
 	
 	@Override
@@ -105,8 +105,7 @@ public class CTF extends ArenaType {
 		if (flagTeam != null) {
 			ArenaPlayer ap = ArenaPlayer.parsePlayer(player);
 			arena.tellEveryone(Language.parse("flagsave",
-					Teams.getTeam(arena, ap).colorizePlayer(player), Teams
-							.getTeam(arena, ap).getName() + ChatColor.YELLOW,
+					Teams.getTeam(arena, ap).colorizePlayer(player), flagTeam.getName() + ChatColor.YELLOW,
 					flagTeam.colorize() + ChatColor.YELLOW));
 			paTeamFlags.remove(flagTeam.getName());
 			if (paHeadGears != null
