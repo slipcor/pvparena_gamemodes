@@ -34,7 +34,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-public class CTF extends ArenaType implements Listener {
+public class CTF extends ArenaType {
 	/**
 	 * TeamName => PlayerName
 	 */
