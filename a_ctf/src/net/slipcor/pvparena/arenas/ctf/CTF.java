@@ -1,9 +1,24 @@
 package net.slipcor.pvparena.arenas.ctf;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+
+import net.slipcor.pvparena.PVPArena;
+import net.slipcor.pvparena.arena.Arena;
+import net.slipcor.pvparena.arena.ArenaPlayer;
+import net.slipcor.pvparena.arena.ArenaPlayer.Status;
+import net.slipcor.pvparena.arena.ArenaTeam;
+import net.slipcor.pvparena.core.Language;
+import net.slipcor.pvparena.core.StringParser;
+import net.slipcor.pvparena.managers.Arenas;
+import net.slipcor.pvparena.managers.Spawns;
+import net.slipcor.pvparena.managers.Teams;
+import net.slipcor.pvparena.neworder.ArenaType;
+import net.slipcor.pvparena.runnables.EndRunnable;
+import net.slipcor.pvparena.runnables.TimerInfo;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,22 +29,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-
-import net.slipcor.pvparena.PVPArena;
-import net.slipcor.pvparena.arena.Arena;
-import net.slipcor.pvparena.arena.ArenaPlayer;
-import net.slipcor.pvparena.arena.ArenaTeam;
-import net.slipcor.pvparena.arena.ArenaPlayer.Status;
-import net.slipcor.pvparena.core.Language;
-import net.slipcor.pvparena.core.StringParser;
-import net.slipcor.pvparena.managers.Arenas;
-import net.slipcor.pvparena.managers.Spawns;
-import net.slipcor.pvparena.managers.Teams;
-import net.slipcor.pvparena.neworder.ArenaType;
-import net.slipcor.pvparena.runnables.EndRunnable;
 
 public class CTF extends ArenaType {
 	/**
@@ -42,12 +45,12 @@ public class CTF extends ArenaType {
 	public CTF() {
 		super("ctf");
 	}
-	
+
 	@Override
 	public String version() {
-		return "v0.8.12.5";
+		return "v0.8.12.6";
 	}
-	
+
 	@Override
 	public void addDefaultTeams(YamlConfiguration config) {
 		config.addDefault("game.woolHead", Boolean.valueOf(false));
@@ -68,7 +71,7 @@ public class CTF extends ArenaType {
 	@Override
 	public boolean checkAndCommit() {
 		db.i("[FLAG]");
-		
+
 		ArenaPlayer activePlayer = null;
 		for (ArenaPlayer p : arena.getPlayers()) {
 			if (p.getStatus().equals(Status.FIGHT)) {
@@ -79,19 +82,19 @@ public class CTF extends ArenaType {
 				activePlayer = p;
 			}
 		}
-		
+
 		if (activePlayer == null) {
 			commit("$%&/", true);
 			return false;
 		}
-		
+
 		ArenaTeam team = Teams.getTeam(arena, activePlayer);
-		
+
 		if (team == null) {
 			commit("$%&/", true);
 			return false;
 		}
-		
+
 		commit(team.getName(), true);
 		return true;
 	}
@@ -105,8 +108,9 @@ public class CTF extends ArenaType {
 		if (flagTeam != null) {
 			ArenaPlayer ap = ArenaPlayer.parsePlayer(player);
 			arena.tellEveryone(Language.parse("flagsave",
-					Teams.getTeam(arena, ap).colorizePlayer(player), flagTeam.getName() + ChatColor.YELLOW,
-					flagTeam.colorize() + ChatColor.YELLOW));
+					Teams.getTeam(arena, ap).colorizePlayer(player),
+					flagTeam.getName() + ChatColor.YELLOW, flagTeam.colorize()
+							+ ChatColor.YELLOW));
 			paTeamFlags.remove(flagTeam.getName());
 			if (paHeadGears != null
 					&& paHeadGears.get(player.getName()) != null) {
@@ -126,6 +130,7 @@ public class CTF extends ArenaType {
 		if (block == null) {
 			return;
 		}
+
 		db.i("checking interact");
 
 		if (!block.getType().equals(Material.WOOL)) {
@@ -134,10 +139,10 @@ public class CTF extends ArenaType {
 		}
 		db.i("flag click!");
 
+		ArenaPlayer ap = ArenaPlayer.parsePlayer(player);
 		Vector vLoc;
 		String sTeam;
 		Vector vFlag = null;
-		ArenaPlayer ap = ArenaPlayer.parsePlayer(player);
 
 		if (paTeamFlags.containsValue(player.getName())) {
 			db.i("player " + player.getName() + " has got a flag");
@@ -186,8 +191,8 @@ public class CTF extends ArenaType {
 					e.printStackTrace();
 				}
 
-				takeFlag(Teams.getTeam(arena, flagTeam).getColor().name(), false,
-						Spawns.getCoords(arena, flagTeam + "flag"));
+				takeFlag(Teams.getTeam(arena, flagTeam).getColor().name(),
+						false, Spawns.getCoords(arena, flagTeam + "flag"));
 				if (arena.cfg.getBoolean("game.woolFlagHead")) {
 					player.getInventory().setHelmet(
 							paHeadGears.get(player.getName()).clone());
@@ -316,33 +321,34 @@ public class CTF extends ArenaType {
 		}
 
 		arena.lives.clear();
-		EndRunnable er = new EndRunnable(arena, arena.cfg.getInt("goal.endtimer"),0);
-		arena.REALEND_ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(PVPArena.instance,
-				er, 20L, 20L);
+		EndRunnable er = new EndRunnable(arena,
+				arena.cfg.getInt("goal.endtimer"), 0);
+		arena.REALEND_ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(
+				PVPArena.instance, er, 20L, 20L);
 		er.setId(arena.REALEND_ID);
 	}
-	
+
 	@Override
 	public void commitCommand(Arena arena, CommandSender sender, String[] args) {
 		if (!(sender instanceof Player)) {
 			Language.parse("onlyplayers");
 			return;
 		}
-		
+
 		System.out.print(StringParser.parseArray(args));
 
 		Player player = (Player) sender;
-		
+
 		if (!PVPArena.hasAdminPerms(player)
 				&& !(PVPArena.hasCreatePerms(player, arena))) {
 			Arenas.tellPlayer(player,
 					Language.parse("nopermto", Language.parse("admin")), arena);
 			return;
 		}
-		
+
 		if (args[0].startsWith("spawn") || args[0].equals("spawn")) {
-			Arenas.tellPlayer(sender, Language.parse("errorspawnfree", args[0]),
-					arena);
+			Arenas.tellPlayer(sender,
+					Language.parse("errorspawnfree", args[0]), arena);
 			return;
 		}
 
@@ -350,7 +356,8 @@ public class CTF extends ArenaType {
 			String[] split = args[0].split("spawn");
 			String sName = split[0];
 			if (Teams.getTeam(arena, sName) == null) {
-				Arenas.tellPlayer(sender, Language.parse("arenateamunknown", sName), arena);
+				Arenas.tellPlayer(sender,
+						Language.parse("arenateamunknown", sName), arena);
 				return;
 			}
 
@@ -358,10 +365,10 @@ public class CTF extends ArenaType {
 			Arenas.tellPlayer(player, Language.parse("setspawn", sName), arena);
 			return;
 		}
-		
+
 		if (args[0].equals("lounge")) {
-			Arenas.tellPlayer(sender, Language.parse("errorloungefree", args[0]),
-					arena);
+			Arenas.tellPlayer(sender,
+					Language.parse("errorloungefree", args[0]), arena);
 			return;
 		}
 
@@ -369,7 +376,8 @@ public class CTF extends ArenaType {
 			String[] split = args[0].split("lounge");
 			String sName = split[0];
 			if (Teams.getTeam(arena, sName) == null) {
-				Arenas.tellPlayer(sender, Language.parse("arenateamunknown", sName), arena);
+				Arenas.tellPlayer(sender,
+						Language.parse("arenateamunknown", sName), arena);
 				return;
 			}
 
@@ -396,17 +404,18 @@ public class CTF extends ArenaType {
 		return StringParser.getColorDataFromENUM(arena.cfg
 				.getString("flagColors." + team));
 	}
-	
+
 	@Override
 	public int getLives(Player defender) {
 		ArenaPlayer ap = ArenaPlayer.parsePlayer(defender);
-		ArenaTeam team = Teams.getTeam(arena,ap);
+		ArenaTeam team = Teams.getTeam(arena, ap);
 		if (team == null) {
 			System.out.print("[WARNING] player in null team: " + ap.getName());
 			return 1;
 		}
 		if (arena.lives.get(team.getName()) == null) {
-			System.out.print("[WARNING] team has null loves: " + team.getName());
+			System.out
+					.print("[WARNING] team has null loves: " + team.getName());
 			return 1;
 		}
 		return arena.lives.get(team.getName());
@@ -438,7 +447,7 @@ public class CTF extends ArenaType {
 		int i = 0;
 
 		db.i("searching for team spawns: " + place);
-		
+
 		HashMap<String, Object> coords = (HashMap<String, Object>) arena.cfg
 				.getYamlConfiguration().getConfigurationSection("spawns")
 				.getValues(false);
@@ -488,8 +497,7 @@ public class CTF extends ArenaType {
 	public void initLanguage(YamlConfiguration config) {
 		config.addDefault("lang.youjoinedctf",
 				"Welcome to the CTF Arena! You are on team %1%'");
-		config.addDefault("lang.playerjoinedctf",
-				"%1% has joined team %2%!'");
+		config.addDefault("lang.playerjoinedctf", "%1% has joined team %2%!'");
 		config.addDefault("lang.killedby", "%1% has been killed by %2%!");
 		config.addDefault("lang.tosetflag", "Flag to set: %1%");
 		config.addDefault("lang.setflag", "Flag set: %1%");
@@ -526,14 +534,13 @@ public class CTF extends ArenaType {
 		}
 		String sName = s.replace("flag", "");
 
-
 		for (ArenaTeam team : arena.getTeams()) {
 			String sTeam = team.getName();
 			if (sName.startsWith(sTeam)) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -543,10 +550,9 @@ public class CTF extends ArenaType {
 		arena.tellEveryone(Language.parse("killedby",
 				respawnTeam.colorizePlayer(respawnPlayer) + ChatColor.YELLOW,
 				arena.parseDeathCause(respawnPlayer, cause, damager)));
-		arena.tpPlayerToCoordName(respawnPlayer, respawnTeam.getName()
-				+ "spawn");
-
 		checkEntityDeath(respawnPlayer);
+		new Thread(new ResapawnRunnable(respawnPlayer, 10, respawnTeam))
+				.start();
 	}
 
 	@Override
@@ -585,11 +591,11 @@ public class CTF extends ArenaType {
 		if (block == null) {
 			return;
 		}
-		
+
 		if (!block.getType().equals(Material.WOOL)) {
 			return;
 		}
-		
+
 		if (!PVPArena.hasAdminPerms(player)
 				&& !(PVPArena.hasCreatePerms(player, arena))) {
 			return;
@@ -655,7 +661,7 @@ public class CTF extends ArenaType {
 		}
 
 		// result hat die Teams mit dem höchsten lebenswert
-		
+
 		for (ArenaTeam team : arena.getTeams()) {
 			if (result.contains(team.getName())) {
 				PVPArena.instance.getAmm().announceWinner(arena,
@@ -676,12 +682,13 @@ public class CTF extends ArenaType {
 
 		PVPArena.instance.getAmm().timedEnd(arena, result);
 
-		EndRunnable er = new EndRunnable(arena, arena.cfg.getInt("goal.endtimer"),0);
-		arena.REALEND_ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(PVPArena.instance,
-				er, 20L, 20L);
+		EndRunnable er = new EndRunnable(arena,
+				arena.cfg.getInt("goal.endtimer"), 0);
+		arena.REALEND_ID = Bukkit.getScheduler().scheduleSyncRepeatingTask(
+				PVPArena.instance, er, 20L, 20L);
 		er.setId(arena.REALEND_ID);
 	}
-	
+
 	@Override
 	public void unload(Player player) {
 		String flag = this.getHeldFlagTeam(player.getName());
@@ -702,5 +709,87 @@ public class CTF extends ArenaType {
 	@Override
 	public boolean usesFlags() {
 		return true;
+	}
+
+	ArrayList<Player> blocked = new ArrayList<Player>();
+
+	public boolean isBlocked(Player p) {
+		return blocked.contains(p);
+	}
+
+	public void setBlocked(Player p, boolean blocked) {
+		if (blocked && !this.blocked.contains(p)) {
+			this.blocked.add(p);
+		} else if (!blocked && isBlocked(p)) {
+			this.blocked.remove(p);
+		}
+	}
+
+	/**
+	 * teleport a given player to the given coord string
+	 * 
+	 * @param player
+	 *            the player to teleport
+	 * @param place
+	 *            the coord string
+	 */
+	public void tpPlace(Player player, String place) {
+		db.i("teleporting " + player + " to coord " + place);
+		Location loc = Spawns.getCoords(arena, place);
+		if (loc == null) {
+			System.out.print("[PA-debug] Spawn null : " + place);
+			return;
+		}
+		ArenaPlayer ap = ArenaPlayer.parsePlayer(player);
+		ap.setTelePass(true);
+		player.teleport(loc);
+		ap.setTelePass(false);
+	}
+
+	/**
+	 * player reset runnable class
+	 * 
+	 * -
+	 * 
+	 * implements an own runnable class in order to warmup a player
+	 * 
+	 * @author slipcor
+	 * 
+	 * @version v0.8.4
+	 * 
+	 */
+
+	private class ResapawnRunnable implements Runnable {
+		private final Player player;
+		private int count = 0;
+		private final ArenaTeam team;
+
+		/**
+		 * create a timed arena runnable
+		 * 
+		 * @param p
+		 *            the player to reset
+		 */
+		public ResapawnRunnable(Player p, int seconds, ArenaTeam team) {
+			player = p;
+			count = seconds + 1;
+			this.team = team;
+			tpPlace(p, "spectator");
+		}
+
+		/**
+		 * the run method, warmup the arena player
+		 */
+		@Override
+		public void run() {
+			TimerInfo.spam("warmingupexact", --count, player, null, false);
+			if (count <= 0) {
+				arena.tpPlayerToCoordName(player, team.getName() + "spawn");
+			} else {
+				Bukkit.getScheduler().scheduleSyncDelayedTask(
+						PVPArena.instance, this, 20L);
+			}
+		}
+
 	}
 }
