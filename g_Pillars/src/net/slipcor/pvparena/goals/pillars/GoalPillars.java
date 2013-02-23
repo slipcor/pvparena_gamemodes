@@ -78,7 +78,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
 	@Override
 	public String version() {
-		return "v1.0.0.30";
+		return "v1.0.1.57";
 	}
 
 	private static final int PRIORITY = 8;
@@ -804,10 +804,19 @@ public class GoalPillars extends ArenaGoal implements Listener {
 		
 		boolean didsomething = false;
 		
+		boolean claimedAll = true;
+		ArenaTeam allClaimed = null;
+		
 		for (String name : this.getPillarMap().keySet()) {
 			final Pillar pillar = getPillarMap().get(name);
 			if (pillar.getOwner() == null) {
+				claimedAll = false;
 				continue;
+			}
+			if ((allClaimed == null || allClaimed == pillar.getOwner())
+					// ^ noone claimed yet or the current team is claiming
+					&& claimedAll) { // and so far everything claimed
+				allClaimed = pillar.getOwner(); // update if needed, done
 			}
 			
 			if (onlyFree &&
@@ -851,6 +860,25 @@ public class GoalPillars extends ArenaGoal implements Listener {
 			
 			scores.put(owner, score);
 			didsomething = true;
+		}
+		
+		if (claimedAll && arena.getArenaConfig().getBoolean(CFG.GOAL_PILLARS_CLAIMALL)) {
+			// team: allClaimed
+			for (ArenaTeam otherTeam : arena.getTeams()) {
+				if (otherTeam.equals(allClaimed)) {
+					continue;
+				}
+				getLifeMap().remove(otherTeam.getName());
+				for (ArenaPlayer ap : otherTeam.getTeamMembers()) {
+					if (ap.getStatus().equals(Status.FIGHT)) {
+						ap.setStatus(Status.LOST);
+						arena.removePlayer(ap.get(), CFG.TP_LOSE.toString(),
+								true, false);
+					}
+				}
+			}
+			PACheck.handleEnd(arena, false);
+			return;
 		}
 		
 		if (scores.isEmpty() || !didsomething) {
