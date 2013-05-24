@@ -78,7 +78,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
 	@Override
 	public String version() {
-		return "v1.0.1.57";
+		return "v1.0.1.111";
 	}
 
 	private static final int PRIORITY = 8;
@@ -535,7 +535,9 @@ public class GoalPillars extends ArenaGoal implements Listener {
 */
 	@Override
 	public PACheck getLives(final PACheck res, final ArenaPlayer aPlayer) {
-		if (!res.hasError() && res.getPriority() <= PRIORITY) {
+		if (scores == null) {
+			res.setError(this, "0");
+		} else if (!res.hasError() && res.getPriority() <= PRIORITY) {
 			res.setError(
 					this,
 					String.valueOf(scores.containsKey(aPlayer.getArenaTeam()) ?
