@@ -336,11 +336,11 @@ public class GoalPillars extends ArenaGoal implements Listener {
 					.announce(
 							arena,
 							Language.parse(MSG.TEAM_HAS_WON,
-									arena.getTeam(winteam).getColor() + "Team "
+									arena.getTeam(winteam).getColor()
 											+ winteam + ChatColor.YELLOW),
 							"WINNER");
 			arena.broadcast(Language.parse(MSG.TEAM_HAS_WON,
-					arena.getTeam(winteam).getColor() + "Team " + winteam
+					arena.getTeam(winteam).getColor() + winteam
 							+ ChatColor.YELLOW));
 		}
 
@@ -438,10 +438,10 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
 			ArenaModuleManager.announce(
 					arena,
-					Language.parse(MSG.TEAM_HAS_WON, aTeam.getColor() + "Team "
+					Language.parse(MSG.TEAM_HAS_WON, aTeam.getColor()
 							+ aTeam.getName() + ChatColor.YELLOW), "WINNER");
 			arena.broadcast(Language.parse(MSG.TEAM_HAS_WON, aTeam.getColor()
-					+ "Team " + aTeam.getName() + ChatColor.YELLOW));
+					+ aTeam.getName() + ChatColor.YELLOW));
 		}
 
 		if (ArenaModuleManager.commitEnd(arena, aTeam)) {
