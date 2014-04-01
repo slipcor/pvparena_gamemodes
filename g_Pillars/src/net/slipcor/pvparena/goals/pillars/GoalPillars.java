@@ -78,7 +78,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
 	@Override
 	public String version() {
-		return "v1.0.1.111";
+		return "v1.2.2.421";
 	}
 
 	private static final int PRIORITY = 8;
@@ -519,20 +519,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
 		}
 		return flagMap;
 	}
-/*
-	private short getFlagOverrideTeamShort(final Arena arena, final String team) {
-		if (arena.getArenaConfig().getUnsafe("flagColors." + team) == null) {
-			if (team.equals("touchdown")) {
-				return StringParser
-						.getColorDataFromENUM(ChatColor.BLACK.name());
-			}
-			return StringParser.getColorDataFromENUM(arena.getTeam(team)
-					.getColor().name());
-		}
-		return StringParser.getColorDataFromENUM((String) arena
-				.getArenaConfig().getUnsafe("flagColors." + team));
-	}
-*/
+	
 	@Override
 	public PACheck getLives(final PACheck res, final ArenaPlayer aPlayer) {
 		if (scores == null) {
@@ -581,32 +568,6 @@ public class GoalPillars extends ArenaGoal implements Listener {
 			pillarMap = new HashMap<String, Pillar>();
 		}
 		return pillarMap;
-	}
-
-	@Override
-	public String guessSpawn(final String place) {
-		// no exact match: assume we have multiple spawnpoints
-		final Map<Integer, String> locs = new HashMap<Integer, String>();
-		int pos = 0;
-
-		debug.i("searching for team spawns: " + place);
-
-		final Map<String, Object> coords = (HashMap<String, Object>) arena
-				.getArenaConfig().getYamlConfiguration()
-				.getConfigurationSection("spawns").getValues(false);
-		for (String name : coords.keySet()) {
-			if (name.startsWith(place)) {
-				locs.put(pos++, name);
-				debug.i("found match: " + name);
-			}
-		}
-
-		if (locs.size() < 1) {
-			return null;
-		}
-		final Random random = new Random();
-
-		return locs.get(random.nextInt(locs.size()));
 	}
 
 	@Override
