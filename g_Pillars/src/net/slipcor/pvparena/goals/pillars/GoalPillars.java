@@ -58,8 +58,6 @@ public class GoalPillars extends ArenaGoal implements Listener {
     private boolean breakable = false;
     private boolean onlyFree = true;
     private int tickPoints = 1;
-    private int tickInterval = 20;
-    private final int announceOffset = 3;
     private int offset = 0;
 
     private BukkitTask pillarRunner = null;
@@ -631,7 +629,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
         final int emptyHeight = arena.getArenaConfig().getInt(CFG.GOAL_PILLARS_EMPTYHEIGHT);
         breakable = arena.getArenaConfig().getBoolean(CFG.GOAL_PILLARS_BREAKABLE);
-        tickInterval = arena.getArenaConfig().getInt(CFG.GOAL_PILLARS_INTERVAL);
+        final int tickInterval = arena.getArenaConfig().getInt(CFG.GOAL_PILLARS_INTERVAL);
         final int maxClicks = arena.getArenaConfig().getInt(CFG.GOAL_PILLARS_MAXCLICKS);
         final int maxHeight = arena.getArenaConfig().getInt(CFG.GOAL_PILLARS_MAXHEIGHT);
         final int teamHeight = arena.getArenaConfig().getInt(CFG.GOAL_PILLARS_TEAMHEIGHT);
@@ -854,7 +852,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
             return;
         }
 
-        offset = ++offset % announceOffset;
+        offset = ++offset % arena.getArenaConfig().getInt(CFG.GOAL_PILLARS_ANNOUNCEOFFSET);
 
         if (offset != 0) {
             return;
