@@ -395,7 +395,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
                     return;
                 }
             }
-            final String value = args[1] + "x" + amp;
+            final String value = args[1] + 'x' + amp;
             arena.getArenaConfig().set(CFG.GOAL_FLAGS_FLAGEFFECT, value);
 
             arena.getArenaConfig().save();
@@ -656,10 +656,10 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
         final int max = arena.getArenaConfig().getInt(CFG.GOAL_PILLARS_LIVES);
 
-        for (final ArenaTeam team : scores.keySet()) {
-            final double score = scores.get(team);
+        for (final Map.Entry<ArenaTeam, Double> arenaTeamDoubleEntry : scores.entrySet()) {
+            final double score = arenaTeamDoubleEntry.getValue();
             if (score >= max) {
-                commit(arena, team.getName());
+                commit(arena, arenaTeamDoubleEntry.getKey().getName());
                 return true;
             }
         }
@@ -853,8 +853,8 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
         final Set<String> msgs = new HashSet<String>();
 
-        for (final ArenaTeam team : scores.keySet()) {
-            msgs.add(Language.parse(MSG.GOAL_PILLARS_MSG_SCORE, team.getColoredName() + ChatColor.YELLOW, String.format("%.1f", scores.get(team))));
+        for (final Map.Entry<ArenaTeam, Double> arenaTeamDoubleEntry : scores.entrySet()) {
+            msgs.add(Language.parse(MSG.GOAL_PILLARS_MSG_SCORE, arenaTeamDoubleEntry.getKey().getColoredName() + ChatColor.YELLOW, String.format("%.1f", arenaTeamDoubleEntry.getValue())));
         }
 
         arena.broadcast(StringParser.joinSet(msgs, " - "));
