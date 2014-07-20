@@ -313,7 +313,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
         String winteam = sTeam;
 
         for (ArenaTeam team : arena.getTeams()) {
-            if (team.getName().equals(sTeam) == true) {
+            if (team.getName().equals(sTeam)) {
                 continue;
             }
             for (ArenaPlayer ap : team.getTeamMembers()) {
