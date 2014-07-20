@@ -219,9 +219,9 @@ public class Pillar {
     public double getClaimStatus() {
         double sum = 0;
 
-        final double oneBlock = maxHeight > 0 ? 1d / maxHeight : 1;
+        final double oneBlock = maxHeight > 0 ? 1.0d / maxHeight : 1;
 
-        sum += maxHeight > 0 ? (double) height * oneBlock : 1;
+        sum += maxHeight > 0 ? height * oneBlock : 1;
 
         return sum;
     }
