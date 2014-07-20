@@ -74,6 +74,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
         return arena.getArenaConfig().getBoolean(CFG.PERMS_JOININBATTLE);
     }
 
+    @Override
     public PACheck checkCommand(final PACheck res, final String string) {
         if (res.getPriority() > PRIORITY) {
             return res;
@@ -91,11 +92,6 @@ public class GoalPillars extends ArenaGoal implements Listener {
     @Override
     public List<String> getMain() {
         return Arrays.asList("flageffect", "touchdown", "pillar");
-    }
-
-    @Override
-    public List<String> getShort() {
-        return Arrays.asList(new String[0]);
     }
 
     @Override

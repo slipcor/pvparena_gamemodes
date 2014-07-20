@@ -62,6 +62,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
         return arena.getArenaConfig().getBoolean(CFG.PERMS_JOININBATTLE);
     }
 
+    @Override
     public PACheck checkCommand(final PACheck res, final String string) {
         if (res.getPriority() > PRIORITY) {
             return res;
@@ -92,11 +93,6 @@ public class GoalRescue extends ArenaGoal implements Listener {
             }
         }
         return result;
-    }
-
-    @Override
-    public List<String> getShort() {
-        return Arrays.asList(new String[0]);
     }
 
     @Override
