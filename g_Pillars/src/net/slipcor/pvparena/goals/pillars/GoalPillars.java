@@ -160,10 +160,8 @@ public class GoalPillars extends ArenaGoal implements Listener {
         }
         debug.i("flag click!", player);
 
-        Pillar pillar;
-
         for (final String pillarName : getPillarMap().keySet()) {
-            pillar = getPillarMap().get(pillarName);
+            Pillar pillar = getPillarMap().get(pillarName);
             final ArenaTeam owner = pillar.getOwner();
             final ArenaPlayer clicker = ArenaPlayer.parsePlayer(player.getName());
             if (pillar.getLocation().equals(new PABlockLocation(block.getLocation()))) {
@@ -744,10 +742,9 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
     @Override
     public Map<String, Double> timedEnd(final Map<String, Double> scores) {
-        double score;
 
         for (final ArenaTeam team : arena.getTeams()) {
-            score = this.scores.containsKey(team) ? this.scores
+            double score = this.scores.containsKey(team) ? this.scores
                     .get(team) : 0;
             if (scores.containsKey(team.getName())) {
                 scores.put(team.getName(), scores.get(team.getName()) + score);
@@ -896,10 +893,8 @@ public class GoalPillars extends ArenaGoal implements Listener {
         }
         debug.i("flag place?", player);
 
-        Pillar pillar;
-
         for (final String pillarName : getPillarMap().keySet()) {
-            pillar = getPillarMap().get(pillarName);
+            Pillar pillar = getPillarMap().get(pillarName);
             final ArenaTeam owner = pillar.getOwner();
             final ArenaPlayer clicker = ArenaPlayer.parsePlayer(player.getName());
             if (pillar.getLocation().equals(new PABlockLocation(block.getLocation()))) {
@@ -944,10 +939,8 @@ public class GoalPillars extends ArenaGoal implements Listener {
         debug.i("flag break?", player);
 
 
-        Pillar pillar;
-
         for (final String pillarName : getPillarMap().keySet()) {
-            pillar = getPillarMap().get(pillarName);
+            Pillar pillar = getPillarMap().get(pillarName);
             final ArenaTeam owner = pillar.getOwner();
             final ArenaPlayer clicker = ArenaPlayer.parsePlayer(player.getName());
             if (pillar.getLocation().equals(new PABlockLocation(block.getLocation()))) {
