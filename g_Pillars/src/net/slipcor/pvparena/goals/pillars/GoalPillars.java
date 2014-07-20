@@ -52,8 +52,6 @@ public class GoalPillars extends ArenaGoal implements Listener {
     private Map<String, Pillar> pillarMap = null;
     private Map<ArenaTeam, Double> scores = null;
 
-    private final static Set<Material> HEADFLAGS = new HashSet<Material>();
-
     private String flagName = "";
 
     private boolean announceTick = true;
@@ -65,13 +63,6 @@ public class GoalPillars extends ArenaGoal implements Listener {
     private int offset = 0;
 
     private BukkitTask pillarRunner = null;
-
-    static {
-        HEADFLAGS.add(Material.PUMPKIN);
-        HEADFLAGS.add(Material.WOOL);
-        HEADFLAGS.add(Material.JACK_O_LANTERN);
-        HEADFLAGS.add(Material.SKULL_ITEM);
-    }
 
     @Override
     public String version() {
