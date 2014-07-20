@@ -67,9 +67,9 @@ public class GoalRescue extends ArenaGoal implements Listener {
             return res;
         }
 
-        if (string.equalsIgnoreCase("entitytype")
-                || string.equalsIgnoreCase("entitytype")) {
+        if ("entitytype".equalsIgnoreCase(string)) {
             res.setPriority(this, PRIORITY);
+            return res;
         }
 
         for (ArenaTeam team : arena.getTeams()) {

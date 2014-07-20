@@ -22,10 +22,10 @@ public class Pillar {
 
     private final ArenaTeam defaultTeam; // the initial claiming team
 
-    private int clicks = 0; // the current clicks
-    private int height = 0; // existing blocks
-    private ArenaTeam owner = null; // the owning team
-    private ArenaTeam claiming = null; // the claiming team
+    private int clicks; // the current clicks
+    private int height; // existing blocks
+    private ArenaTeam owner; // the owning team
+    private ArenaTeam claiming; // the claiming team
 
     /**
      * <pre>
@@ -118,7 +118,7 @@ public class Pillar {
     public PillarResult blockPlace(final ArenaPlayer player) {
 
 
-        if (this.maxClicks > 0) {
+        if (maxClicks > 0) {
 
             return blockClick(player);
         }
