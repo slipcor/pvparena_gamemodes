@@ -169,7 +169,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
             final ArenaTeam owner = pillar.getOwner();
             final ArenaPlayer clicker = ArenaPlayer.parsePlayer(player.getName());
             if (pillar.getLocation().equals(new PABlockLocation(block.getLocation()))) {
-                announce(pillar, pillarName, owner, clicker, pillar.blockClick(clicker));
+                announce(pillarName, owner, clicker, pillar.blockClick(clicker));
                 //res.setPriority(this, PRIORITY);
                 return res;
             }
@@ -180,14 +180,12 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
     /**
      * Announce a pillar change
-     *
-     * @param pillar     the pillar we talk about
-     * @param pillarName the pillar name we talk about
+     *  @param pillarName the pillar name we talk about
      * @param owner      the former owning team
      * @param player     the change causing player
      * @param result     the PillarResult
      */
-    private void announce(final Pillar pillar, final String pillarName, final ArenaTeam owner, final ArenaPlayer player,
+    private void announce(final String pillarName, final ArenaTeam owner, final ArenaPlayer player,
                           final PillarResult result) {
 
         if (result == PillarResult.NONE) {
@@ -308,14 +306,14 @@ public class GoalPillars extends ArenaGoal implements Listener {
         return res;
     }
 
-    private void commit(final Arena arena, final String sTeam, final boolean win) {
+    private void commit(final Arena arena, final String sTeam) {
         debug.i("[Pillar] committing end: " + sTeam);
-        debug.i("win: " + win);
+        debug.i("win: " + true);
 
         String winteam = sTeam;
 
         for (ArenaTeam team : arena.getTeams()) {
-            if (team.getName().equals(sTeam) == win) {
+            if (team.getName().equals(sTeam) == true) {
                 continue;
             }
             for (ArenaPlayer ap : team.getTeamMembers()) {
@@ -669,7 +667,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
         for (ArenaTeam team : scores.keySet()) {
             final double score = scores.get(team);
             if (score >= max) {
-                commit(arena, team.getName(), true);
+                commit(arena, team.getName());
                 return true;
             }
         }
@@ -763,7 +761,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
         return scores;
     }
 
-    protected void tick() {
+    void tick() {
 
         if (arena.realEndRunner != null) {
             return;
@@ -915,7 +913,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
                     return;
                 }
 
-                announce(pillar, pillarName, owner, clicker, pillar.blockPlace(clicker));
+                announce(pillarName, owner, clicker, pillar.blockPlace(clicker));
                 return;
             } else {
                 if (pillar.containsLocation(new PABlockLocation(event.getBlock().getLocation()))) {
@@ -966,7 +964,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
                 event.setCancelled(result == Pillar.PillarResult.NONE);
 
-                announce(pillar, pillarName, owner, clicker, result);
+                announce(pillarName, owner, clicker, result);
                 return;
             } else {
                 if (pillar.containsLocation(new PABlockLocation(event.getBlock().getLocation()))) {

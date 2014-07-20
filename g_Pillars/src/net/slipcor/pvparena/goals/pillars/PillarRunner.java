@@ -2,7 +2,7 @@ package net.slipcor.pvparena.goals.pillars;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class PillarRunner extends BukkitRunnable {
+class PillarRunner extends BukkitRunnable {
 
     private final GoalPillars goal;
 

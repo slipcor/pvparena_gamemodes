@@ -46,7 +46,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
         debug = new Debug(112);
     }
 
-    private Map<Entity, ArenaTeam> entityMap = new HashMap<Entity, ArenaTeam>();
+    private final Map<Entity, ArenaTeam> entityMap = new HashMap<Entity, ArenaTeam>();
 
     private String flagName = "";
 
