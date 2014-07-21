@@ -46,13 +46,13 @@ public class GoalRescue extends ArenaGoal implements Listener {
         debug = new Debug(112);
     }
 
-    private Map<Entity, ArenaTeam> entityMap = new HashMap<Entity, ArenaTeam>();
+    private final Map<Entity, ArenaTeam> entityMap = new HashMap<Entity, ArenaTeam>();
 
     private String flagName = "";
 
     @Override
     public String version() {
-        return "v1.3.0.495";
+        return "v1.3.0.515";
     }
 
     private static final int PRIORITY = 8;
@@ -62,14 +62,15 @@ public class GoalRescue extends ArenaGoal implements Listener {
         return arena.getArenaConfig().getBoolean(CFG.PERMS_JOININBATTLE);
     }
 
+    @Override
     public PACheck checkCommand(final PACheck res, final String string) {
         if (res.getPriority() > PRIORITY) {
             return res;
         }
 
-        if (string.equalsIgnoreCase("entitytype")
-                || string.equalsIgnoreCase("entitytype")) {
+        if ("entitytype".equalsIgnoreCase(string)) {
             res.setPriority(this, PRIORITY);
+            return res;
         }
 
         for (ArenaTeam team : arena.getTeams()) {
@@ -84,7 +85,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
 
     @Override
     public List<String> getMain() {
-        List<String> result = Arrays.asList("entitytype");
+        List<String> result = Collections.singletonList("entitytype");
         if (arena != null) {
             for (ArenaTeam team : arena.getTeams()) {
                 final String sTeam = team.getName();
@@ -92,11 +93,6 @@ public class GoalRescue extends ArenaGoal implements Listener {
             }
         }
         return result;
-    }
-
-    @Override
-    public List<String> getShort() {
-        return Arrays.asList(new String[0]);
     }
 
     @Override
@@ -142,8 +138,6 @@ public class GoalRescue extends ArenaGoal implements Listener {
             return;
         }
 
-        PotionEffectType pet = null;
-
         final String[] split = value.split("x");
 
         int amp = 1;
@@ -156,6 +150,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
             }
         }
 
+        PotionEffectType pet = null;
         for (PotionEffectType x : PotionEffectType.values()) {
             if (x == null) {
                 continue;
@@ -362,7 +357,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
                     return;
                 }
             }
-            final String value = args[1] + "x" + amp;
+            final String value = args[1] + 'x' + amp;
             arena.getArenaConfig().set(CFG.GOAL_RESCUE_RESCUEEFFECT, value);
 
             arena.getArenaConfig().save();
@@ -500,10 +495,10 @@ public class GoalRescue extends ArenaGoal implements Listener {
     }
 
     private ArenaTeam getHeldFlagTeam(final String playerName) {
-        for (Entity e : entityMap.keySet()) {
-            if (e.getVehicle() instanceof Player) {
-                if (((Player) e.getVehicle()).getName().equals(playerName)) {
-                    return entityMap.get(e);
+        for (Map.Entry<Entity, ArenaTeam> entityArenaTeamEntry : entityMap.entrySet()) {
+            if (entityArenaTeamEntry.getKey().getVehicle() instanceof Player) {
+                if (((Player) entityArenaTeamEntry.getKey().getVehicle()).getName().equals(playerName)) {
+                    return entityArenaTeamEntry.getValue();
                 }
             }
         }
@@ -736,10 +731,9 @@ public class GoalRescue extends ArenaGoal implements Listener {
 
     @Override
     public Map<String, Double> timedEnd(final Map<String, Double> scores) {
-        double score;
 
         for (ArenaTeam team : arena.getTeams()) {
-            score = (getLifeMap().containsKey(team.getName()) ? getLifeMap()
+            double score = (getLifeMap().containsKey(team.getName()) ? getLifeMap()
                     .get(team.getName()) : 0);
             if (scores.containsKey(team.getName())) {
                 scores.put(team.getName(), scores.get(team.getName()) + score);
@@ -820,14 +814,14 @@ public class GoalRescue extends ArenaGoal implements Listener {
             return;
         }
 
-        for (Entity e : entityMap.keySet()) {
-            if (e.getVehicle() != null) {
+        for (Map.Entry<Entity, ArenaTeam> entityArenaTeamEntry : entityMap.entrySet()) {
+            if (entityArenaTeamEntry.getKey().getVehicle() != null) {
                 arena.getDebugger().i("taken!OUT! ", player);
                 continue; // ignore riding hostages
             }
-            if (e.equals(event.getEntity())) {
+            if (entityArenaTeamEntry.getKey().equals(event.getEntity())) {
                 // we found the hit entity
-                if (entityMap.get(e).equals(pTeam)) {
+                if (entityArenaTeamEntry.getValue().equals(pTeam)) {
                     // same team. out!
                     arena.getDebugger().i("equals!OUT! ", player);
                     event.setCancelled(true);
@@ -835,7 +829,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
                     return;
 
                 }
-                ArenaTeam team = entityMap.get(e);
+                ArenaTeam team = entityArenaTeamEntry.getValue();
                 arena.broadcast(Language
                         .parse(arena, MSG.GOAL_FLAGS_GRABBED,
                                 pTeam.colorizePlayer(player)
@@ -847,7 +841,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
                 applyEffects(player);
 
                 takeFlag(team, true,
-                        new PABlockLocation(block.getLocation()), player, e);
+                        new PABlockLocation(block.getLocation()), player, entityArenaTeamEntry.getKey());
 
             }
         }
@@ -874,8 +868,8 @@ public class GoalRescue extends ArenaGoal implements Listener {
 
         boolean isSafe = true;
 
-        for (Entity e : entityMap.keySet()) {
-            if (e.getVehicle() != null && entityMap.get(e).equals(aPlayer.getArenaTeam())) {
+        for (Map.Entry<Entity, ArenaTeam> entityArenaTeamEntry : entityMap.entrySet()) {
+            if (entityArenaTeamEntry.getKey().getVehicle() != null && entityArenaTeamEntry.getValue().equals(aPlayer.getArenaTeam())) {
                 isSafe = false;
                 break;
             }
