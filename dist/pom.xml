@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.slipcor.pvpa</groupId>
         <artifactId>goals</artifactId>
-        <version>1.3</version>
+        <version>1.3-SNAPSHOT</version>
     </parent>
 
       <name>PVP Arena Goals - Distribution</name>
