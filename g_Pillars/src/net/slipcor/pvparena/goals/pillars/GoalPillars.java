@@ -277,7 +277,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
             if (team != null && maxTeamPlayers > 0
                     && team.getTeamMembers().size() >= maxTeamPlayers) {
-                res.setError(this, Language.parse(MSG.ERROR_JOIN_TEAM_FULL));
+                res.setError(this, Language.parse(MSG.ERROR_JOIN_TEAM_FULL, team.getName()));
                 return res;
             }
         }
