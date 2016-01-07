@@ -96,7 +96,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
     @Override
     public CommandTree<String> getSubs(final Arena arena) {
-        final CommandTree<String> result = new CommandTree<String>(null);
+        final CommandTree<String> result = new CommandTree<>(null);
         result.define(new String[]{"flageffect", "{PotionEffectType}"});
         result.define(new String[]{"flageffect", "none"});
         return result;
@@ -509,7 +509,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
     private Map<String, String> getFlagMap() {
         if (flagMap == null) {
-            flagMap = new HashMap<String, String>();
+            flagMap = new HashMap<>();
         }
         return flagMap;
     }
@@ -529,7 +529,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
     private Map<String, ItemStack> getHeadGearMap() {
         if (headGearMap == null) {
-            headGearMap = new HashMap<String, ItemStack>();
+            headGearMap = new HashMap<>();
         }
         return headGearMap;
     }
@@ -558,7 +558,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
     private Map<String, Pillar> getPillarMap() {
         if (pillarMap == null) {
-            pillarMap = new HashMap<String, Pillar>();
+            pillarMap = new HashMap<>();
         }
         return pillarMap;
     }
@@ -614,7 +614,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
         getPillarMap().clear();
 
         if (scores == null) {
-            scores = new HashMap<ArenaTeam, Double>();
+            scores = new HashMap<>();
         }
 
         scores.clear();
@@ -851,7 +851,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
             return;
         }
 
-        final Set<String> msgs = new HashSet<String>();
+        final Set<String> msgs = new HashSet<>();
 
         for (final Map.Entry<ArenaTeam, Double> arenaTeamDoubleEntry : scores.entrySet()) {
             msgs.add(Language.parse(MSG.GOAL_PILLARS_MSG_SCORE, arenaTeamDoubleEntry.getKey().getColoredName() + ChatColor.YELLOW, String.format("%.1f", arenaTeamDoubleEntry.getValue())));
