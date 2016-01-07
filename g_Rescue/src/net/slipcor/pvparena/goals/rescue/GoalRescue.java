@@ -46,7 +46,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
         debug = new Debug(112);
     }
 
-    private final Map<Entity, ArenaTeam> entityMap = new HashMap<Entity, ArenaTeam>();
+    private final Map<Entity, ArenaTeam> entityMap = new HashMap<>();
 
     private String flagName = "";
 
@@ -97,7 +97,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
 
     @Override
     public CommandTree<String> getSubs(final Arena arena) {
-        CommandTree<String> result = new CommandTree<String>(null);
+        CommandTree<String> result = new CommandTree<>(null);
         result.define(new String[]{"entitytype", "{EntityType}"});
         result.define(new String[]{"rescueeffect", "{PotionEffectType}"});
         return result;
