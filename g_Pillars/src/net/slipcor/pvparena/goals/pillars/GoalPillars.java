@@ -146,11 +146,10 @@ public class GoalPillars extends ArenaGoal implements Listener {
         }
         debug.i("checking interact", player);
 
-        if (!block
-                .getType()
-                .name()
-                .equals(arena.getArenaConfig().getString(
-                        CFG.GOAL_FLAGS_FLAGTYPE))) {
+        ItemStack flagType = StringParser.getItemStackFromString(arena.getArenaConfig().getString(
+                CFG.GOAL_FLAGS_FLAGTYPE));
+
+        if (block.getType() != flagType.getType() || (flagType.getData().getData()>0 && flagType.getData().getData() != block.getData())) {
             debug.i("block, but not flag", player);
             return res;
         }
@@ -879,11 +878,10 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
         final Block block = event.getBlockAgainst();
 
-        if (!block
-                .getType()
-                .name()
-                .equals(arena.getArenaConfig().getString(
-                        CFG.GOAL_FLAGS_FLAGTYPE))) {
+        ItemStack flagType = StringParser.getItemStackFromString(arena.getArenaConfig().getString(
+                CFG.GOAL_FLAGS_FLAGTYPE));
+
+        if (block.getType() != flagType.getType() || (flagType.getData().getData()>0 && flagType.getData().getData() != block.getData())) {
             debug.i("block, but not flag", player);
             return;
         }
@@ -924,11 +922,9 @@ public class GoalPillars extends ArenaGoal implements Listener {
             return;
         }
 
-        if (!block
-                .getType()
-                .name()
-                .equals(arena.getArenaConfig().getString(
-                        CFG.GOAL_FLAGS_FLAGTYPE))) {
+        ItemStack flagType = StringParser.getItemStackFromString(arena.getArenaConfig().getString(
+                CFG.GOAL_FLAGS_FLAGTYPE));
+        if (block.getType() != flagType.getType() || (flagType.getData().getData()>0 && flagType.getData().getData() != block.getData())) {
             debug.i("block, but not flag", player);
             return;
         }

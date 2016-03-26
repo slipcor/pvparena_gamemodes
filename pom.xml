@@ -15,6 +15,7 @@
     </properties>
 
     <modules>
+        <module>g_Beacons</module>
         <module>g_Pillars</module>
         <module>g_Rescue</module>
         <module>dist</module>

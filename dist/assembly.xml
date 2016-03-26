@@ -13,6 +13,13 @@
 
     <fileSets>
         <fileSet>
+            <directory>${basedir}/../g_Beacons/target/</directory>
+            <outputDirectory>/files/</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
             <directory>${basedir}/../g_Pillars/target/</directory>
             <outputDirectory>/files/</outputDirectory>
             <includes>

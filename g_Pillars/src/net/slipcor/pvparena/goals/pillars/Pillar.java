@@ -152,7 +152,7 @@ public class Pillar {
 
                 @Override
                 public void run() {
-                    final ItemStack removal = player.getItemInHand().clone();
+                    final ItemStack removal = player.getInventory().getItemInHand().clone();
                     removal.setAmount(1);
                     player.getInventory().remove(removal);
                     player.updateInventory();

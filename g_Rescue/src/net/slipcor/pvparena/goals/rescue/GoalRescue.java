@@ -34,6 +34,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
@@ -210,12 +211,10 @@ public class GoalRescue extends ArenaGoal implements Listener {
                 || !PAA_Region.activeSelections.containsKey(player.getName())) {
             return res;
         }
-        if (block == null
-                || !block
-                .getType()
-                .name()
-                .equals(arena.getArenaConfig().getString(
-                        CFG.GOAL_FLAGS_FLAGTYPE))) {
+
+        ItemStack flagType = StringParser.getItemStackFromString(arena.getArenaConfig().getString(
+                CFG.GOAL_FLAGS_FLAGTYPE));
+        if (block.getType() != flagType.getType() || (flagType.getData().getData()>0 && flagType.getData().getData() != block.getData())) {
             return res;
         }
 
