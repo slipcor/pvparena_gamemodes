@@ -1,2 +1,6 @@
-/target/
-.iml
+# Idea
+*.iml
+.idea/
+
+# Maven
+*/target/
