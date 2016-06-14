@@ -4,7 +4,7 @@
     <parent>
 	    <groupId>net.slipcor.pvpa</groupId>
 	    <artifactId>goals</artifactId>
-        <version>1.3.2-SNAPSHOT</version>
+        <version>1.3.3-SNAPSHOT</version>
     </parent>
 	
 	<artifactId>g_beacons</artifactId>
@@ -27,14 +27,14 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <version>1.9.4-R0.1-SNAPSHOT</version>
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.slipcor</groupId>
             <artifactId>pvparena</artifactId>
-            <version>1.3.2-SNAPSHOT</version>
+            <version>1.3.3-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
 	</dependencies>
