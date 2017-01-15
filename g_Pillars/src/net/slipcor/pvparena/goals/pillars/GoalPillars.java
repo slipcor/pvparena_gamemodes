@@ -64,7 +64,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
     @Override
     public String version() {
-        return "v1.3.2.51";
+        return "v1.3.3.224";
     }
 
     private static final int PRIORITY = 8;

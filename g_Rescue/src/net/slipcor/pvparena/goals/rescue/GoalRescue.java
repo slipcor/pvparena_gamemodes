@@ -53,7 +53,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
 
     @Override
     public String version() {
-        return "v1.3.2.51";
+        return "v1.3.3.224";
     }
 
     private static final int PRIORITY = 8;
@@ -496,7 +496,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
     private ArenaTeam getHeldFlagTeam(final String playerName) {
         for (Map.Entry<Entity, ArenaTeam> entityArenaTeamEntry : entityMap.entrySet()) {
             if (entityArenaTeamEntry.getKey().getVehicle() instanceof Player) {
-                if (((Player) entityArenaTeamEntry.getKey().getVehicle()).getName().equals(playerName)) {
+                if ((entityArenaTeamEntry.getKey().getVehicle()).getName().equals(playerName)) {
                     return entityArenaTeamEntry.getValue();
                 }
             }
@@ -507,7 +507,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
     private Entity getHeldFlag(String playerName) {
         for (Entity e : entityMap.keySet()) {
             if (e.getVehicle() instanceof Player) {
-                if (((Player) e.getVehicle()).getName().equals(playerName)) {
+                if ((e.getVehicle()).getName().equals(playerName)) {
                     return e;
                 }
             }

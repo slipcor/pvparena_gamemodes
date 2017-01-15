@@ -55,7 +55,7 @@ public class GoalBeacons extends ArenaGoal {
 
     @Override
     public String version() {
-        return "v1.3.2.99";
+        return "v1.3.3.224";
     }
 
     private static final int PRIORITY = 10;
@@ -551,7 +551,8 @@ public class GoalBeacons extends ArenaGoal {
                 continue;
             }
             if (!show) {
-                ap.get().sendBlockChange(bGlass.getLocation(), Material.STAINED_GLASS, DyeColor.WHITE.getData());
+                ap.get().sendBlockChange(bGlass.getLocation(), Material.STAINED_GLASS,
+                        StringParser.getColorDataFromENUM("WHITE"));
             } else {
 
             }
@@ -566,9 +567,9 @@ public class GoalBeacons extends ArenaGoal {
 
         if (PVPArena.hasAdminPerms(player)
                 || PVPArena.hasCreatePerms(player, arena)
-                && player.getItemInHand() != null
-                && player.getItemInHand().getTypeId() == arena
-                .getArenaConfig().getInt(CFG.GENERAL_WAND)) {
+                && player.getInventory().getItemInMainHand() != null
+                && player.getInventory().getItemInMainHand().getType().name() == arena
+                .getArenaConfig().getString(CFG.GENERAL_WAND)) {
 
             final Set<PABlockLocation> beacons = SpawnManager.getBlocksStartingWith(arena,
                     "beacon");

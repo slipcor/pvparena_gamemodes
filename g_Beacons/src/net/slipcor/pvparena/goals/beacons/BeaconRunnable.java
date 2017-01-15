@@ -105,7 +105,7 @@ class BeaconRunnable implements Runnable {
         }
         if (team == null) {
             for (ArenaPlayer ap : arena.getEveryone()) {
-                ap.get().sendBlockChange(lBlock, Material.STAINED_GLASS, DyeColor.WHITE.getData());
+                ap.get().sendBlockChange(lBlock, Material.STAINED_GLASS, StringParser.getColorDataFromENUM("WHITE"));
             }
 /*
             if (!"".equals(name)) {
@@ -121,7 +121,6 @@ class BeaconRunnable implements Runnable {
             beacons.activateBeacon(true);*/
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
     }
 }
