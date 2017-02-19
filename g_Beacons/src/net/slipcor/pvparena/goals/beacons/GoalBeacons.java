@@ -55,7 +55,7 @@ public class GoalBeacons extends ArenaGoal {
 
     @Override
     public String version() {
-        return "v1.3.3.224";
+        return "v1.3.3.243";
     }
 
     private static final int PRIORITY = 10;
@@ -611,11 +611,12 @@ public class GoalBeacons extends ArenaGoal {
     @Override
     public PACheck getLives(final PACheck res, final ArenaPlayer aPlayer) {
         if (res.getPriority() <= PRIORITY + 1000) {
+            final int max = arena.getArenaConfig().getInt(CFG.GOAL_BEACONS_LIVES);
             res.setError(
                     this,
                     String.valueOf(getLifeMap().containsKey(aPlayer.getArenaTeam()
-                            .getName()) ? getLifeMap().get(aPlayer
-                            .getArenaTeam().getName()) : 0));
+                            .getName()) ? (max-getLifeMap().get(aPlayer
+                            .getArenaTeam().getName())) : max));
         }
         return res;
     }
@@ -700,6 +701,9 @@ public class GoalBeacons extends ArenaGoal {
         if (getLifeMap().get(team) != null) {
             final int iLives = getLifeMap().get(team) - arena.getArenaConfig().getInt(CFG.GOAL_BEACONS_TICKREWARD);
             if (iLives > 0) {
+
+                final PAGoalEvent gEvent = new PAGoalEvent(arena, this, "trigger:" + team);
+                Bukkit.getPluginManager().callEvent(gEvent);
                 getLifeMap().put(team, iLives);
             } else {
                 getLifeMap().remove(team);
