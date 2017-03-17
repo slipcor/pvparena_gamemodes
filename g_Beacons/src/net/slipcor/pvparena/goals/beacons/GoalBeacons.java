@@ -19,6 +19,7 @@ import net.slipcor.pvparena.loadables.ArenaGoal;
 import net.slipcor.pvparena.loadables.ArenaModuleManager;
 import net.slipcor.pvparena.managers.SpawnManager;
 import net.slipcor.pvparena.managers.TeamManager;
+import net.slipcor.pvparena.runnables.CircleParticleRunnable;
 import net.slipcor.pvparena.runnables.EndRunnable;
 import org.bukkit.*;
 import org.bukkit.block.Beacon;
@@ -29,10 +30,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.BeaconInventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
 public class GoalBeacons extends ArenaGoal {
+
+    private BukkitTask circleTask = null;
 
     private static BlockFace[] fakePyramid = new BlockFace[]{
             BlockFace.SELF,
@@ -55,7 +59,7 @@ public class GoalBeacons extends ArenaGoal {
 
     @Override
     public String version() {
-        return "v1.3.3.243";
+        return "v1.3.4.257";
     }
 
     private static final int PRIORITY = 10;
@@ -693,6 +697,8 @@ public class GoalBeacons extends ArenaGoal {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(PVPArena.instance, runner, runInterval*20, runInterval*20);
         }
         runner.run();
+
+        circleTask = Bukkit.getScheduler().runTaskTimer(PVPArena.instance, new CircleParticleRunnable(arena, CFG.GOAL_BEACONS_CLAIMRANGE), 1L, 1L);
     }
 
     protected boolean reduceLivesCheckEndAndCommit(final Arena arena, final String team) {
@@ -725,6 +731,11 @@ public class GoalBeacons extends ArenaGoal {
         try {
             Bukkit.getScheduler().cancelTask(runner.rID);
         } catch (Exception e) {
+        }
+
+        if (circleTask != null) {
+            circleTask.cancel();
+            circleTask = null;
         }
     }
 
