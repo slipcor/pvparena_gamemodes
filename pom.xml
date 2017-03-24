@@ -8,7 +8,7 @@
     <name>PVP Arena Goals</name>
     <groupId>net.slipcor.pvpa</groupId>
     <artifactId>goals</artifactId>
-    <version>1.3.3-SNAPSHOT</version>
+    <version>1.3.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
