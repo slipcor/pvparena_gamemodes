@@ -38,6 +38,7 @@ import java.util.*;
 public class GoalBeacons extends ArenaGoal {
 
     private BukkitTask circleTask = null;
+    private boolean selectingBeacons = false;
 
     private static BlockFace[] fakePyramid = new BlockFace[]{
             BlockFace.SELF,
@@ -441,7 +442,7 @@ public class GoalBeacons extends ArenaGoal {
                 || !PAA_Region.activeSelections.containsKey(player.getName())) {
             return res;
         }
-        if (block == null || (block.getType() != Material.STAINED_GLASS && block.getType() != Material.GLASS)) {
+        if (!selectingBeacons || block == null || (block.getType() != Material.STAINED_GLASS && block.getType() != Material.GLASS)) {
             return res;
         }
         res.setPriority(this, PRIORITY); // success :)
@@ -503,10 +504,11 @@ public class GoalBeacons extends ArenaGoal {
         if (PAA_Region.activeSelections.containsKey(sender.getName())) {
             PAA_Region.activeSelections.remove(sender.getName());
             arena.msg(sender, Language.parse(arena, MSG.GOAL_BEACONS_SETDONE));
+            selectingBeacons = false;
         } else {
-
             PAA_Region.activeSelections.put(sender.getName(), arena);
             arena.msg(sender, Language.parse(arena, MSG.GOAL_BEACONS_TOSET));
+            selectingBeacons = true;
         }
     }
 

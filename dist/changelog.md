@@ -1,4 +1,5 @@
-- v1.3.4.277 - [Beacons] - add BossBar implementation 
+- v1.3.4.289 - [Beacons] - only set beacons if we used the command
+- v1.3.4.277 - [Beacons] - add BossBar implementation
 - v1.3.4.257 - [Beacons] - add particle effect runnable
 - v1.3.3.243 - [Beacons] - update scoreboards when scoring
 - v1.3.3.224 - backwards update for Spigot 1.11 changes
