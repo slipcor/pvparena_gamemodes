@@ -64,7 +64,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
     @Override
     public String version() {
-        return "v1.3.3.224";
+        return "v1.13.1";
     }
 
     private static final int PRIORITY = 8;
@@ -447,7 +447,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
     @Override
     public boolean commitSetFlag(final Player player, final Block block) {
         if (block == null
-                || block.getType() != Material.WOOL) {
+                || !(block.getType().name().contains("WOOL"))) {
             return false;
         }
 

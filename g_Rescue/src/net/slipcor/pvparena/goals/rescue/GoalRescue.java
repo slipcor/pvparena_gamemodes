@@ -53,7 +53,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
 
     @Override
     public String version() {
-        return "v1.3.3.224";
+        return "v1.13.0";
     }
 
     private static final int PRIORITY = 8;

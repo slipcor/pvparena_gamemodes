@@ -105,7 +105,7 @@ class BeaconRunnable implements Runnable {
         }
         if (team == null) {
             for (ArenaPlayer ap : arena.getEveryone()) {
-                ap.get().sendBlockChange(lBlock, Material.STAINED_GLASS, StringParser.getColorDataFromENUM("WHITE"));
+                ap.get().sendBlockChange(lBlock, Material.WHITE_STAINED_GLASS.createBlockData());
             }
 /*
             if (!"".equals(name)) {
@@ -115,7 +115,11 @@ class BeaconRunnable implements Runnable {
         }
         try {
             for (ArenaPlayer ap : arena.getEveryone()) {
-                ap.get().sendBlockChange(lBlock, Material.STAINED_GLASS, StringParser.getColorDataFromENUM(team.getColor().name()));
+                Material wool = StringParser.getWoolMaterialFromChatColor(team.getColor());
+                String newName = wool.name().replace("_WOOL", "")
+                        + "STAINED_GLASS";
+                Material newMaterial = Material.getMaterial(newName);
+                ap.get().sendBlockChange(lBlock, newMaterial.createBlockData());
             }
 /*
             beacons.activateBeacon(true);*/

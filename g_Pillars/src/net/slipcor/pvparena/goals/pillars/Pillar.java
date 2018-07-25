@@ -6,6 +6,7 @@ import net.slipcor.pvparena.arena.ArenaTeam;
 import net.slipcor.pvparena.classes.PABlockLocation;
 import net.slipcor.pvparena.core.StringParser;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -107,7 +108,7 @@ public class Pillar {
 
         if (owner == null) {
             owner = claiming;
-            baseLocation.toLocation().getBlock().setTypeIdAndData(Material.WOOL.getId(), StringParser.getColorDataFromENUM(claiming.getColor().name()), true);
+            baseLocation.toLocation().getBlock().setType(StringParser.getWoolMaterialFromChatColor(claiming.getColor()));
 
             return PillarResult.CLAIMED;
         }
@@ -135,7 +136,7 @@ public class Pillar {
 
         if (owner == null) {
             owner = claiming;
-            baseLocation.toLocation().getBlock().setTypeIdAndData(Material.WOOL.getId(), StringParser.getColorDataFromENUM(claiming.getColor().name()), true);
+            baseLocation.toLocation().getBlock().setType(StringParser.getWoolMaterialFromChatColor(claiming.getColor()));
             height = 1;
             return PillarResult.CLAIMED;
         }
@@ -193,14 +194,14 @@ public class Pillar {
 
                     @Override
                     public void run() {
-                        baseLocation.toLocation().getBlock().setTypeIdAndData(Material.WOOL.getId(), (byte) 0, true);
+                        baseLocation.toLocation().getBlock().setType(Material.WHITE_WOOL);
                     }
 
                 }
                 Bukkit.getScheduler().runTaskLater(PVPArena.instance, new RunLater(), 1L);
                 return PillarResult.BLOCK_BROKEN;
             } else {
-                removing.setTypeIdAndData(Material.WOOL.getId(), StringParser.getColorDataFromENUM("WHITE"), true);
+                removing.setType(Material.WHITE_WOOL);
                 return PillarResult.UNCLAIMED;
             }
         }
@@ -208,7 +209,7 @@ public class Pillar {
 
             @Override
             public void run() {
-                baseLocation.toLocation().getBlock().setTypeIdAndData(Material.WOOL.getId(), StringParser.getColorDataFromENUM(owner.getColor().name()), true);
+                baseLocation.toLocation().getBlock().setType(StringParser.getWoolMaterialFromChatColor(owner.getColor()));
             }
 
         }
@@ -251,7 +252,7 @@ public class Pillar {
 
             @Override
             public void run() {
-                newBlock.setTypeIdAndData(Material.WOOL.getId(), StringParser.getColorDataFromENUM(claiming.getColor().name()), true);
+                newBlock.setType(StringParser.getWoolMaterialFromChatColor(claiming.getColor()));
             }
 
         }
@@ -269,12 +270,11 @@ public class Pillar {
 
         final Location loc = baseLocation.toLocation();
         int pos = 0;
-        final String color = owner == null ? "WHITE" : owner.getColor().name();
-        final byte bColor = StringParser.getColorDataFromENUM(color);
+        final ChatColor color = owner == null ? ChatColor.WHITE : owner.getColor();
 
         while (pos < maxHeight) {
             if (pos < height) {
-                loc.getBlock().getRelative(BlockFace.UP, pos).setTypeIdAndData(Material.WOOL.getId(), bColor, false);
+                loc.getBlock().getRelative(BlockFace.UP, pos).setType(StringParser.getWoolMaterialFromChatColor(color));
             } else {
                 loc.getBlock().getRelative(BlockFace.UP, pos).setType(Material.AIR);
             }

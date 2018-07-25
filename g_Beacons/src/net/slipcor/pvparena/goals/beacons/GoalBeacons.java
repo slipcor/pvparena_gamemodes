@@ -62,7 +62,7 @@ public class GoalBeacons extends ArenaGoal {
 
     @Override
     public String version() {
-        return "v1.3.4.277";
+        return "v1.13.1";
     }
 
     private static final int PRIORITY = 10;
@@ -442,7 +442,7 @@ public class GoalBeacons extends ArenaGoal {
                 || !PAA_Region.activeSelections.containsKey(player.getName())) {
             return res;
         }
-        if (!selectingBeacons || block == null || (block.getType() != Material.STAINED_GLASS && block.getType() != Material.GLASS)) {
+        if (!selectingBeacons || block == null || (!block.getType().name().contains("STAINED_GLASS") && block.getType() != Material.GLASS)) {
             return res;
         }
         res.setPriority(this, PRIORITY); // success :)
@@ -585,8 +585,7 @@ public class GoalBeacons extends ArenaGoal {
                 continue;
             }
             if (!show) {
-                ap.get().sendBlockChange(bGlass.getLocation(), Material.STAINED_GLASS,
-                        StringParser.getColorDataFromENUM("WHITE"));
+                ap.get().sendBlockChange(bGlass.getLocation(), Material.WHITE_STAINED_GLASS.createBlockData());
             } else {
 
             }
@@ -799,7 +798,7 @@ public class GoalBeacons extends ArenaGoal {
      * @param paBlockLocation the location to take/reset*/
     void takeBeacon(final PABlockLocation paBlockLocation) {
         for (ArenaPlayer ap : arena.getEveryone()) {
-            ap.get().sendBlockChange(paBlockLocation.toLocation(), Material.STAINED_GLASS, (byte) 0);
+            ap.get().sendBlockChange(paBlockLocation.toLocation(), Material.WHITE_STAINED_GLASS.createBlockData());
         }
     }
 
