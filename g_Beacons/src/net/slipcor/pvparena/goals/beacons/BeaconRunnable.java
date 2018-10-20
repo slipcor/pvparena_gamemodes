@@ -5,7 +5,7 @@ import net.slipcor.pvparena.arena.ArenaPlayer;
 import net.slipcor.pvparena.arena.ArenaTeam;
 import net.slipcor.pvparena.core.Config;
 import net.slipcor.pvparena.core.Language;
-import net.slipcor.pvparena.core.StringParser;
+import net.slipcor.pvparena.core.Utils;
 import org.bukkit.*;
 
 class BeaconRunnable implements Runnable {
@@ -115,7 +115,7 @@ class BeaconRunnable implements Runnable {
         }
         try {
             for (ArenaPlayer ap : arena.getEveryone()) {
-                Material wool = StringParser.getWoolMaterialFromChatColor(team.getColor());
+                Material wool = Utils.getWoolMaterialFromChatColor(team.getColor());
                 String newName = wool.name().replace("_WOOL", "")
                         + "STAINED_GLASS";
                 Material newMaterial = Material.getMaterial(newName);

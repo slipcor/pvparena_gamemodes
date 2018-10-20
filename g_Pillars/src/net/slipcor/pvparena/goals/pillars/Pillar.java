@@ -4,7 +4,7 @@ import net.slipcor.pvparena.PVPArena;
 import net.slipcor.pvparena.arena.ArenaPlayer;
 import net.slipcor.pvparena.arena.ArenaTeam;
 import net.slipcor.pvparena.classes.PABlockLocation;
-import net.slipcor.pvparena.core.StringParser;
+import net.slipcor.pvparena.core.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -108,7 +108,7 @@ public class Pillar {
 
         if (owner == null) {
             owner = claiming;
-            baseLocation.toLocation().getBlock().setType(StringParser.getWoolMaterialFromChatColor(claiming.getColor()));
+            baseLocation.toLocation().getBlock().setType(Utils.getWoolMaterialFromChatColor(claiming.getColor()));
 
             return PillarResult.CLAIMED;
         }
@@ -136,7 +136,7 @@ public class Pillar {
 
         if (owner == null) {
             owner = claiming;
-            baseLocation.toLocation().getBlock().setType(StringParser.getWoolMaterialFromChatColor(claiming.getColor()));
+            baseLocation.toLocation().getBlock().setType(Utils.getWoolMaterialFromChatColor(claiming.getColor()));
             height = 1;
             return PillarResult.CLAIMED;
         }
@@ -209,7 +209,7 @@ public class Pillar {
 
             @Override
             public void run() {
-                baseLocation.toLocation().getBlock().setType(StringParser.getWoolMaterialFromChatColor(owner.getColor()));
+                baseLocation.toLocation().getBlock().setType(Utils.getWoolMaterialFromChatColor(owner.getColor()));
             }
 
         }
@@ -252,7 +252,7 @@ public class Pillar {
 
             @Override
             public void run() {
-                newBlock.setType(StringParser.getWoolMaterialFromChatColor(claiming.getColor()));
+                newBlock.setType(Utils.getWoolMaterialFromChatColor(claiming.getColor()));
             }
 
         }
@@ -274,7 +274,7 @@ public class Pillar {
 
         while (pos < maxHeight) {
             if (pos < height) {
-                loc.getBlock().getRelative(BlockFace.UP, pos).setType(StringParser.getWoolMaterialFromChatColor(color));
+                loc.getBlock().getRelative(BlockFace.UP, pos).setType(Utils.getWoolMaterialFromChatColor(color));
             } else {
                 loc.getBlock().getRelative(BlockFace.UP, pos).setType(Material.AIR);
             }

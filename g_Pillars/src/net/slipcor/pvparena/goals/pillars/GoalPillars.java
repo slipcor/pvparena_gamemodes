@@ -64,7 +64,7 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
     @Override
     public String version() {
-        return "v1.13.1";
+        return "v1.13.2";
     }
 
     private static final int PRIORITY = 8;
@@ -146,10 +146,10 @@ public class GoalPillars extends ArenaGoal implements Listener {
         }
         debug.i("checking interact", player);
 
-        ItemStack flagType = StringParser.getItemStackFromString(arena.getArenaConfig().getString(
+        Material flagMaterial = Material.getMaterial(arena.getArenaConfig().getString(
                 CFG.GOAL_FLAGS_FLAGTYPE));
 
-        if (block.getType() != flagType.getType() || (flagType.getData().getData()>0 && flagType.getData().getData() != block.getData())) {
+        if (block.getType() != flagMaterial) {
             debug.i("block, but not flag", player);
             return res;
         }
@@ -878,10 +878,10 @@ public class GoalPillars extends ArenaGoal implements Listener {
 
         final Block block = event.getBlockAgainst();
 
-        ItemStack flagType = StringParser.getItemStackFromString(arena.getArenaConfig().getString(
+        Material flagMaterial = Material.getMaterial(arena.getArenaConfig().getString(
                 CFG.GOAL_FLAGS_FLAGTYPE));
 
-        if (block.getType() != flagType.getType() || (flagType.getData().getData()>0 && flagType.getData().getData() != block.getData())) {
+        if (block.getType() != flagMaterial) {
             debug.i("block, but not flag", player);
             return;
         }
@@ -922,9 +922,10 @@ public class GoalPillars extends ArenaGoal implements Listener {
             return;
         }
 
-        ItemStack flagType = StringParser.getItemStackFromString(arena.getArenaConfig().getString(
+        Material flagMaterial = Material.getMaterial(arena.getArenaConfig().getString(
                 CFG.GOAL_FLAGS_FLAGTYPE));
-        if (block.getType() != flagType.getType() || (flagType.getData().getData()>0 && flagType.getData().getData() != block.getData())) {
+
+        if (block.getType() != flagMaterial) {
             debug.i("block, but not flag", player);
             return;
         }

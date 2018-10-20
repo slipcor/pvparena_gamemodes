@@ -24,6 +24,7 @@ import net.slipcor.pvparena.runnables.EndRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -53,7 +54,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
 
     @Override
     public String version() {
-        return "v1.13.0";
+        return "v1.13.2";
     }
 
     private static final int PRIORITY = 8;
@@ -212,9 +213,10 @@ public class GoalRescue extends ArenaGoal implements Listener {
             return res;
         }
 
-        ItemStack flagType = StringParser.getItemStackFromString(arena.getArenaConfig().getString(
+        Material flagMaterial = Material.getMaterial(arena.getArenaConfig().getString(
                 CFG.GOAL_FLAGS_FLAGTYPE));
-        if (block.getType() != flagType.getType() || (flagType.getData().getData()>0 && flagType.getData().getData() != block.getData())) {
+
+        if (block.getType() != flagMaterial) {
             return res;
         }
 

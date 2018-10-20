@@ -62,7 +62,7 @@ public class GoalBeacons extends ArenaGoal {
 
     @Override
     public String version() {
-        return "v1.13.1";
+        return "v1.13.2";
     }
 
     private static final int PRIORITY = 10;
