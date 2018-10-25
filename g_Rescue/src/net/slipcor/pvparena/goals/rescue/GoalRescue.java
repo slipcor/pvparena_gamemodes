@@ -54,7 +54,7 @@ public class GoalRescue extends ArenaGoal implements Listener {
 
     @Override
     public String version() {
-        return "v1.13.2";
+        return "v1.13.3";
     }
 
     private static final int PRIORITY = 8;
@@ -89,6 +89,8 @@ public class GoalRescue extends ArenaGoal implements Listener {
     public List<String> getMain() {
         List<String> result = Collections.singletonList("entitytype");
         if (arena != null) {
+            result = new ArrayList<>();
+            result.add("entitytype");
             for (ArenaTeam team : arena.getTeams()) {
                 final String sTeam = team.getName();
                 result.add(sTeam + "rescue");

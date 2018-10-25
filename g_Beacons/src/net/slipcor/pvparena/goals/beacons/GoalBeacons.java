@@ -62,7 +62,7 @@ public class GoalBeacons extends ArenaGoal {
 
     @Override
     public String version() {
-        return "v1.13.2";
+        return "v1.13.3";
     }
 
     private static final int PRIORITY = 10;
@@ -601,8 +601,8 @@ public class GoalBeacons extends ArenaGoal {
         if (PVPArena.hasAdminPerms(player)
                 || PVPArena.hasCreatePerms(player, arena)
                 && player.getInventory().getItemInMainHand() != null
-                && player.getInventory().getItemInMainHand().getType().name() == arena
-                .getArenaConfig().getString(CFG.GENERAL_WAND)) {
+                && player.getInventory().getItemInMainHand().getType().toString().equals(arena
+                .getArenaConfig().getString(CFG.GENERAL_WAND))) {
 
             final Set<PABlockLocation> beacons = SpawnManager.getBlocksStartingWith(arena,
                     "beacon");
